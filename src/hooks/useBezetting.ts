@@ -84,21 +84,8 @@ export function useBezetting(
   // Bouw BezettingRij structuur op
   const weekSleutels = new Set(weken.map(w => `${w.jaar}-${w.week}`))
 
-  // Welke projecten hebben bezetting in de gegeven weken?
-  const relevanteProjectIds = new Set(
-    bezettingen
-      .filter(b => weekSleutels.has(`${b.jaar}-${b.week}`))
-      .map(b => b.project_id)
-  )
-
-  // Voeg altijd systeemprojecten toe
-  const systeemProjectIds = new Set(
-    projecten.filter(p => p.is_systeem).map(p => p.id)
-  )
-
-  const getoondProjecten = projecten.filter(
-    p => relevanteProjectIds.has(p.id) || systeemProjectIds.has(p.id)
-  )
+  // Toon alle actieve projecten (consultant kan overal uren invullen)
+  const getoondProjecten = projecten
 
   const rijen: BezettingRij[] = getoondProjecten.map(project => {
     const wkenMap: Record<string, number> = {}

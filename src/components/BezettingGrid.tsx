@@ -90,7 +90,7 @@ export function BezettingGrid({
                       key={weekKey}
                       uren={uren}
                       gewijzigd={isGewijzigd(rij.project.id, weekKey)}
-                      readonly={readonly || rij.project.is_systeem}
+                      readonly={readonly}
                       weekTotaal={weekTotaal}
                       onWijzig={u => verwerkWijziging(rij.project.id, weekKey, u)}
                     />
