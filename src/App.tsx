@@ -24,13 +24,8 @@ function PrivateRoute({
 }) {
   const { session, rol, laden } = useAuth()
 
-  if (laden) {
-    return (
-      <div className="laden-scherm">
-        <div className="laden-spinner" />
-      </div>
-    )
-  }
+  // Toon niets (blanco) tijdens laden — voorkomt flikkering
+  if (laden) return null
 
   if (!session) return <Navigate to="/login" replace />
   if (vereistRol && rol !== vereistRol) {
