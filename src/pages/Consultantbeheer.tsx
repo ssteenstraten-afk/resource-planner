@@ -5,7 +5,7 @@ import type { Database } from '../lib/database.types'
 
 type Consultant = Database['public']['Tables']['consultants']['Row']
 
-const NIVEAUS = ['Junior', 'Medior', 'Senior', 'Manager', 'Partner']
+const NIVEAUS = ['Business Analist', 'Consultant', 'Senior Consultant', 'Manager', 'Principal Consultant', 'Director', 'Partner']
 
 export function Consultantbeheer() {
   const navigate = useNavigate()
