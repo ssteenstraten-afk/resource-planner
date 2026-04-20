@@ -102,7 +102,7 @@ export function Dashboard() {
     <div className="pagina-wrapper" onClick={() => setTooltipInfo(null)}>
       <div className="pagina-header">
         <h1 className="pagina-titel">Bezettingsoverzicht</h1>
-        <a href="/dashboard/projecten" className="btn-secundair">Projectbeheer</a>
+        <button className="btn-secundair" onClick={() => navigate('/dashboard/projecten')}>Projectbeheer</button>
       </div>
 
       <div className="dashboard-filters">

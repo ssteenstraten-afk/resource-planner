@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 
@@ -24,12 +24,12 @@ export function NavBar() {
       <div className="navbar-links">
         {rol === 'planner' && (
           <>
-            <a href="/dashboard" className="nav-link">Dashboard</a>
-            <a href="/dashboard/projecten" className="nav-link">Projecten</a>
+            <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            <Link to="/dashboard/projecten" className="nav-link">Projecten</Link>
           </>
         )}
         {rol === 'consultant' && (
-          <a href="/mijn-week" className="nav-link">Mijn week</a>
+          <Link to="/mijn-week" className="nav-link">Mijn week</Link>
         )}
       </div>
 
