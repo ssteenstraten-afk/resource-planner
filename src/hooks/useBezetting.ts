@@ -82,8 +82,6 @@ export function useBezetting(
   }, [laadData])
 
   // Bouw BezettingRij structuur op
-  const weekSleutels = new Set(weken.map(w => `${w.jaar}-${w.week}`))
-
   // Toon alle actieve projecten (consultant kan overal uren invullen)
   const getoondProjecten = projecten
 
