@@ -1,5 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/AuthProvider'
 import { supabase } from '../lib/supabase'
 
 export function NavBar() {

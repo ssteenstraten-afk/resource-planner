@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './hooks/useAuth'
+import { useAuth } from './hooks/AuthProvider'
 import { Login } from './pages/Login'
 import { AuthCallback } from './pages/AuthCallback'
 import { MijnWeek } from './pages/MijnWeek'

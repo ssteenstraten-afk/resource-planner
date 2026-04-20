@@ -1,4 +1,4 @@
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/AuthProvider'
 import { useBezetting } from '../hooks/useBezetting'
 import { getKomendeWeken } from '../lib/weekUtils'
 import { BezettingGrid } from '../components/BezettingGrid'
