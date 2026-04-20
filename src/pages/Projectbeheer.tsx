@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { getISOWeek, getISOWeekYear, addWeeks } from 'date-fns'
@@ -6,45 +6,57 @@ import type { Database } from '../lib/database.types'
 
 type Project = Database['public']['Tables']['projecten']['Row']
 type Consultant = Database['public']['Tables']['consultants']['Row']
+type Bezetting = Database['public']['Tables']['bezetting']['Row']
 type ProjectInsert = Database['public']['Tables']['projecten']['Insert']
 
 const LEEG_FORMULIER: ProjectInsert = {
-  naam: '',
-  klant: '',
-  startdatum: null,
-  einddatum: null,
-  status: 'actief',
-  is_systeem: false,
+  naam: '', klant: '', startdatum: null, einddatum: null, status: 'actief', is_systeem: false,
 }
 
 export function Projectbeheer() {
   const navigate = useNavigate()
   const [projecten, setProjecten] = useState<Project[]>([])
   const [consultants, setConsultants] = useState<Consultant[]>([])
+  const [bezettingen, setBezettingen] = useState<Bezetting[]>([])
   const [laden, setLaden] = useState(true)
   const [formulier, setFormulier] = useState<ProjectInsert>(LEEG_FORMULIER)
   const [toonFormulier, setToonFormulier] = useState(false)
   const [opslaan, setOpslaan] = useState(false)
   const [fout, setFout] = useState<string | null>(null)
 
-  // Toewijzing state
   const [geselecteerdProject, setGeselecteerdProject] = useState<string | null>(null)
   const [toewijzingConsultant, setToewijzingConsultant] = useState('')
-  const [toewijzingUren, setToewijzingUren] = useState('16')
   const [toewijzingBezig, setToewijzingBezig] = useState(false)
   const [toewijzingFout, setToewijzingFout] = useState<string | null>(null)
 
   async function laadData() {
-    const [projRes, consRes] = await Promise.all([
+    const [projRes, consRes, bezRes] = await Promise.all([
       supabase.from('projecten').select('*').order('is_systeem', { ascending: false }).order('naam'),
       supabase.from('consultants').select('*').eq('actief', true).eq('rol', 'consultant').order('naam'),
+      supabase.from('bezetting').select('*'),
     ])
     setProjecten(projRes.data ?? [])
     setConsultants(consRes.data ?? [])
+    setBezettingen(bezRes.data ?? [])
     setLaden(false)
   }
 
   useEffect(() => { laadData() }, [])
+
+  // Toegewezen consultants per project (unieke consultant_ids)
+  const toegewezenPerProject = useMemo(() => {
+    const map = new Map<string, Set<string>>()
+    for (const b of bezettingen) {
+      if (!map.has(b.project_id)) map.set(b.project_id, new Set())
+      map.get(b.project_id)!.add(b.consultant_id)
+    }
+    return map
+  }, [bezettingen])
+
+  const consultantNaam = useMemo(
+    () => new Map(consultants.map(c => [c.id, c])),
+    [consultants]
+  )
 
   async function handleOpslaan(e: React.FormEvent) {
     e.preventDefault()
@@ -63,8 +75,7 @@ export function Projectbeheer() {
 
   async function handleAfsluiten(project: Project) {
     if (project.is_systeem) return
-    const nieuweStatus = project.status === 'actief' ? 'afgesloten' : 'actief'
-    await supabase.from('projecten').update({ status: nieuweStatus }).eq('id', project.id)
+    await supabase.from('projecten').update({ status: project.status === 'actief' ? 'afgesloten' : 'actief' }).eq('id', project.id)
     await laadData()
   }
 
@@ -73,14 +84,6 @@ export function Projectbeheer() {
     setToewijzingBezig(true)
     setToewijzingFout(null)
 
-    const uren = parseFloat(toewijzingUren)
-    if (isNaN(uren) || uren <= 0) {
-      setToewijzingFout('Voer geldige uren in')
-      setToewijzingBezig(false)
-      return
-    }
-
-    // Bepaal wekenbereik op basis van project start/einddatum
     const vandaag = new Date()
     const start = project.startdatum ? new Date(project.startdatum) : vandaag
     const eind = project.einddatum ? new Date(project.einddatum) : addWeeks(vandaag, 12)
@@ -93,24 +96,26 @@ export function Projectbeheer() {
         project_id: project.id,
         jaar: getISOWeekYear(huidig),
         week: getISOWeek(huidig),
-        uren,
+        uren: 0,
       })
       huidig = addWeeks(huidig, 1)
     }
 
-    if (upserts.length === 0) {
-      setToewijzingFout('Geen weken gevonden in de projectperiode')
-      setToewijzingBezig(false)
-      return
-    }
-
     const { error } = await supabase.from('bezetting').upsert(upserts, {
       onConflict: 'consultant_id,project_id,jaar,week',
+      ignoreDuplicates: true,
     })
 
     if (error) setToewijzingFout(error.message)
-    else { setToewijzingConsultant(''); setToewijzingUren('16') }
+    else { setToewijzingConsultant(''); await laadData() }
     setToewijzingBezig(false)
+  }
+
+  async function handleVerwijderToewijzing(projectId: string, consultantId: string) {
+    await supabase.from('bezetting').delete()
+      .eq('project_id', projectId)
+      .eq('consultant_id', consultantId)
+    await laadData()
   }
 
   if (laden) {
@@ -132,7 +137,7 @@ export function Projectbeheer() {
       {toonFormulier && (
         <div className="formulier-kaart">
           <h2 className="formulier-titel">Nieuw project aanmaken</h2>
-          <form onSubmit={handleOpslaan} className="project-formulier">
+          <form onSubmit={handleOpslaan}>
             <div className="form-rij">
               <div className="form-veld">
                 <label>Projectnaam *</label>
@@ -171,7 +176,7 @@ export function Projectbeheer() {
               </div>
             </div>
             {fout && <div className="form-fout">{fout}</div>}
-            <div className="form-acties">
+            <div className="form-acties" style={{ marginTop: 16 }}>
               <button type="submit" className="btn-primair" disabled={opslaan}>
                 {opslaan ? 'Opslaan...' : 'Project aanmaken'}
               </button>
@@ -193,81 +198,92 @@ export function Projectbeheer() {
             </tr>
           </thead>
           <tbody>
-            {projecten.map(project => (
-              <>
-                <tr key={project.id} className={project.status === 'afgesloten' ? 'rij-afgesloten' : ''}>
-                  <td>
-                    <span className="project-naam-tekst">{project.naam}</span>
-                    {project.is_systeem && <span className="badge badge-systeem">systeem</span>}
-                  </td>
-                  <td>{project.klant ?? '—'}</td>
-                  <td>{project.startdatum ? `${project.startdatum} – ${project.einddatum ?? '…'}` : '—'}</td>
-                  <td><span className={`badge badge-${project.status}`}>{project.status}</span></td>
-                  <td style={{ display: 'flex', gap: 8 }}>
-                    {!project.is_systeem && (
-                      <>
-                        <button className="btn-tekst"
-                          onClick={() => setGeselecteerdProject(p => p === project.id ? null : project.id)}>
-                          {geselecteerdProject === project.id ? 'Sluiten' : 'Consultants toewijzen'}
-                        </button>
-                        <button className="btn-tekst" onClick={() => handleAfsluiten(project)}>
-                          {project.status === 'actief' ? 'Afsluiten' : 'Heropenen'}
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-
-                {geselecteerdProject === project.id && (
-                  <tr key={`${project.id}-toewijzing`}>
-                    <td colSpan={5} style={{ padding: 0 }}>
-                      <div className="toewijzing-sectie">
-                        <div className="toewijzing-titel">Consultant toewijzen aan {project.naam}</div>
-                        <div className="toewijzing-rij">
-                          <select
-                            value={toewijzingConsultant}
-                            onChange={e => setToewijzingConsultant(e.target.value)}
-                            className="form-invoer"
-                            style={{ width: 220 }}
-                          >
-                            <option value="">— Selecteer consultant —</option>
-                            {consultants.map(c => (
-                              <option key={c.id} value={c.id}>
-                                {c.naam} ({c.functieniveau})
-                              </option>
-                            ))}
-                          </select>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <input
-                              type="number"
-                              min="1" max="40" step="0.5"
-                              value={toewijzingUren}
-                              onChange={e => setToewijzingUren(e.target.value)}
-                              className="form-invoer"
-                              style={{ width: 80 }}
-                            />
-                            <span style={{ fontSize: 13, color: 'var(--grijs-500)', whiteSpace: 'nowrap' }}>uur/week</span>
-                          </div>
-                          <button
-                            className="btn-primair"
-                            onClick={() => handleToewijzen(project)}
-                            disabled={!toewijzingConsultant || toewijzingBezig}
-                          >
-                            {toewijzingBezig ? 'Bezig...' : 'Toewijzen'}
+            {projecten.map(project => {
+              const toegewezen = toegewezenPerProject.get(project.id) ?? new Set()
+              const isOpen = geselecteerdProject === project.id
+              return (
+                <>
+                  <tr key={project.id} className={project.status === 'afgesloten' ? 'rij-afgesloten' : ''}>
+                    <td>
+                      <span className="project-naam-tekst">{project.naam}</span>
+                      {project.is_systeem && <span className="badge badge-systeem">systeem</span>}
+                    </td>
+                    <td>{project.klant ?? '—'}</td>
+                    <td>{project.startdatum ? `${project.startdatum} – ${project.einddatum ?? '…'}` : '—'}</td>
+                    <td><span className={`badge badge-${project.status}`}>{project.status}</span></td>
+                    <td style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      {!project.is_systeem && (
+                        <>
+                          <button className="btn-tekst"
+                            onClick={() => { setGeselecteerdProject(isOpen ? null : project.id); setToewijzingFout(null) }}>
+                            {isOpen ? 'Sluiten' : `Consultants (${toegewezen.size})`}
                           </button>
-                        </div>
-                        {!project.startdatum && (
-                          <p style={{ fontSize: 12, color: 'var(--grijs-500)', marginTop: 6 }}>
-                            Tip: stel een start- en einddatum in om de juiste weken te vullen. Zonder datum worden de komende 12 weken gebruikt.
-                          </p>
-                        )}
-                        {toewijzingFout && <div className="form-fout" style={{ marginTop: 8 }}>{toewijzingFout}</div>}
-                      </div>
+                          <button className="btn-tekst" onClick={() => handleAfsluiten(project)}>
+                            {project.status === 'actief' ? 'Afsluiten' : 'Heropenen'}
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
-                )}
-              </>
-            ))}
+
+                  {isOpen && (
+                    <tr key={`${project.id}-toewijzing`}>
+                      <td colSpan={5} style={{ padding: 0 }}>
+                        <div className="toewijzing-sectie">
+                          <div className="toewijzing-titel">Toegewezen consultants</div>
+
+                          {toegewezen.size === 0 ? (
+                            <p style={{ fontSize: 13, color: 'var(--grijs-400)', marginBottom: 12 }}>Nog niemand toegewezen.</p>
+                          ) : (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                              {Array.from(toegewezen).map(cId => {
+                                const c = consultantNaam.get(cId)
+                                return (
+                                  <div key={cId} className="toewijzing-consultant">
+                                    <span>{c?.naam ?? cId}</span>
+                                    <span style={{ color: 'var(--grijs-400)', fontSize: 11 }}>{c?.functieniveau}</span>
+                                    <button
+                                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--grijs-400)', fontSize: 14, lineHeight: 1, padding: '0 2px' }}
+                                      onClick={() => handleVerwijderToewijzing(project.id, cId)}
+                                      title="Verwijder toewijzing"
+                                    >×</button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
+
+                          <div className="toewijzing-titel">Consultant toevoegen</div>
+                          <div className="toewijzing-rij">
+                            <select value={toewijzingConsultant}
+                              onChange={e => setToewijzingConsultant(e.target.value)}
+                              className="form-invoer" style={{ width: 220 }}>
+                              <option value="">— Selecteer consultant —</option>
+                              {consultants
+                                .filter(c => !toegewezen.has(c.id))
+                                .map(c => (
+                                  <option key={c.id} value={c.id}>{c.naam} ({c.functieniveau})</option>
+                                ))}
+                            </select>
+                            <button className="btn-primair"
+                              onClick={() => handleToewijzen(project)}
+                              disabled={!toewijzingConsultant || toewijzingBezig}>
+                              {toewijzingBezig ? 'Bezig...' : 'Toewijzen'}
+                            </button>
+                          </div>
+                          {!project.startdatum && (
+                            <p style={{ fontSize: 12, color: 'var(--grijs-400)', marginTop: 6 }}>
+                              Tip: stel een start- en einddatum in voor de juiste weken. Zonder datum worden de komende 12 weken gebruikt.
+                            </p>
+                          )}
+                          {toewijzingFout && <div className="form-fout" style={{ marginTop: 8 }}>{toewijzingFout}</div>}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
+              )
+            })}
           </tbody>
         </table>
       </div>

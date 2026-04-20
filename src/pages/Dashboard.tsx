@@ -7,6 +7,7 @@ import type { Database } from '../lib/database.types'
 
 type Consultant = Database['public']['Tables']['consultants']['Row']
 type Bezetting = Database['public']['Tables']['bezetting']['Row']
+type Project = Database['public']['Tables']['projecten']['Row']
 
 const INITIEEL_WEKEN = 12
 
@@ -14,10 +15,11 @@ export function Dashboard() {
   const navigate = useNavigate()
   const [consultants, setConsultants] = useState<Consultant[]>([])
   const [bezettingen, setBezettingen] = useState<Bezetting[]>([])
+  const [projecten, setProjecten] = useState<Project[]>([])
   const [laden, setLaden] = useState(true)
   const [weekOffset, setWeekOffset] = useState(0)
   const [filterNiveau, setFilterNiveau] = useState('alle')
-  const [zoekterm, setZoekterm] = useState('')
+  const [filterNaam, setFilterNaam] = useState('alle')
   const [tooltipInfo, setTooltipInfo] = useState<{
     consultantId: string
     weekKey: string
@@ -34,20 +36,23 @@ export function Dashboard() {
   useEffect(() => {
     async function laad() {
       setLaden(true)
-      const [consResult, bezResult] = await Promise.all([
+      const [consResult, bezResult, projResult] = await Promise.all([
         supabase.from('consultants').select('*').eq('actief', true).eq('rol', 'consultant').order('naam'),
-        supabase
-          .from('bezetting')
-          .select('*')
-          .gte('jaar', weken[0].jaar)
-          .lte('jaar', weken[weken.length - 1].jaar),
+        supabase.from('bezetting').select('*').gte('jaar', weken[0].jaar).lte('jaar', weken[weken.length - 1].jaar),
+        supabase.from('projecten').select('*'),
       ])
       if (consResult.data) setConsultants(consResult.data)
       if (bezResult.data) setBezettingen(bezResult.data)
+      if (projResult.data) setProjecten(projResult.data)
       setLaden(false)
     }
     laad()
   }, [weken[0].jaar, weken[0].week])
+
+  const projectNaam = useMemo(
+    () => new Map(projecten.map(p => [p.id, p.naam])),
+    [projecten]
+  )
 
   const niveaus = useMemo(
     () => ['alle', ...Array.from(new Set(consultants.map(c => c.functieniveau))).sort()],
@@ -56,7 +61,7 @@ export function Dashboard() {
 
   const gefilterdeConsultants = consultants.filter(c => {
     const niveauOk = filterNiveau === 'alle' || c.functieniveau === filterNiveau
-    const naamOk = c.naam.toLowerCase().includes(zoekterm.toLowerCase())
+    const naamOk = filterNaam === 'alle' || c.id === filterNaam
     return niveauOk && naamOk
   })
 
@@ -102,54 +107,29 @@ export function Dashboard() {
     <div className="pagina-wrapper" onClick={() => setTooltipInfo(null)}>
       <div className="pagina-header">
         <h1 className="pagina-titel">Bezettingsoverzicht</h1>
-        <button className="btn-secundair" onClick={() => navigate('/dashboard/projecten')}>Projectbeheer</button>
       </div>
 
       <div className="dashboard-filters">
-        <select
-          value={filterNiveau}
-          onChange={e => setFilterNiveau(e.target.value)}
-          className="filter-select"
-        >
+        <select value={filterNiveau} onChange={e => setFilterNiveau(e.target.value)} className="filter-select">
           {niveaus.map(n => (
             <option key={n} value={n}>{n === 'alle' ? 'Alle niveaus' : n}</option>
           ))}
         </select>
-        <input
-          type="search"
-          placeholder="Zoek op naam..."
-          value={zoekterm}
-          onChange={e => setZoekterm(e.target.value)}
-          className="filter-zoek"
-        />
+        <select value={filterNaam} onChange={e => setFilterNaam(e.target.value)} className="filter-select" style={{ minWidth: 180 }}>
+          <option value="alle">Alle consultants</option>
+          {consultants.map(c => (
+            <option key={c.id} value={c.id}>{c.naam}</option>
+          ))}
+        </select>
         <div className="week-navigatie">
-          <button
-            className="btn-icon"
-            onClick={() => setWeekOffset(o => o - 1)}
-            title="Vorige week"
-          >
-            ‹
-          </button>
-          <span className="week-nav-label">
-            {weken[0].label} – {weken[weken.length - 1].label}
-          </span>
-          <button
-            className="btn-icon"
-            onClick={() => setWeekOffset(o => o + 1)}
-            title="Volgende week"
-          >
-            ›
-          </button>
-          <button
-            className="btn-tekst"
-            onClick={() => setWeekOffset(0)}
-          >
-            Vandaag
-          </button>
+          <button className="btn-icon" onClick={() => setWeekOffset(o => o - 1)} title="Vorige week">‹</button>
+          <span className="week-nav-label">{weken[0].label} – {weken[weken.length - 1].label}</span>
+          <button className="btn-icon" onClick={() => setWeekOffset(o => o + 1)} title="Volgende week">›</button>
+          <button className="btn-tekst" onClick={() => setWeekOffset(0)}>Vandaag</button>
         </div>
       </div>
 
-      <div className="tabel-scroll">
+      <div className="tabel-scroll kaart">
         <table className="bezetting-tabel heatmap-tabel">
           <thead>
             <tr>
@@ -176,10 +156,7 @@ export function Dashboard() {
                     <td
                       key={weekKey}
                       className="heatmap-cel"
-                      style={{
-                        backgroundColor: getCelKleur(pct),
-                        color: getCelTekstKleur(pct),
-                      }}
+                      style={{ backgroundColor: getCelKleur(pct), color: getCelTekstKleur(pct) }}
                       onClick={e => {
                         e.stopPropagation()
                         setTooltipInfo({ consultantId: consultant.id, weekKey, x: e.clientX, y: e.clientY })
@@ -196,20 +173,21 @@ export function Dashboard() {
       </div>
 
       {tooltipInfo && (() => {
-        const projecten = getTooltipProjecten(tooltipInfo.consultantId, tooltipInfo.weekKey)
+        const bezRijen = getTooltipProjecten(tooltipInfo.consultantId, tooltipInfo.weekKey)
+        const [jaar, week] = tooltipInfo.weekKey.split('-')
         return (
           <div
             className="tooltip"
             style={{ left: tooltipInfo.x + 8, top: tooltipInfo.y + 8 }}
             onClick={e => e.stopPropagation()}
           >
-            <div className="tooltip-header">{tooltipInfo.weekKey.replace('-', ' wk ')}</div>
-            {projecten.length === 0 ? (
+            <div className="tooltip-header">wk{week} {jaar}</div>
+            {bezRijen.length === 0 ? (
               <div className="tooltip-rij">Geen bezetting</div>
             ) : (
-              projecten.map(b => (
+              bezRijen.map(b => (
                 <div key={b.id} className="tooltip-rij">
-                  <span className="tooltip-project-id">{b.project_id.slice(0, 8)}…</span>
+                  <span>{projectNaam.get(b.project_id) ?? '—'}</span>
                   <span className="tooltip-uren">{b.uren}u</span>
                 </div>
               ))

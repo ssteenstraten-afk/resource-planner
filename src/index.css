@@ -108,7 +108,7 @@ h1, h2, h3 {
   color: white;
   padding: 0 24px;
   height: 100%;
-  background: var(--teal);
+  background: var(--oranje);
   text-decoration: none;
   min-width: 220px;
 }
@@ -210,7 +210,7 @@ h1, h2, h3 {
    ============================ */
 .btn-primair {
   padding: 9px 20px;
-  background: var(--teal);
+  background: var(--oranje);
   color: white;
   border: none;
   border-radius: var(--radius);
@@ -224,7 +224,7 @@ h1, h2, h3 {
   white-space: nowrap;
 }
 
-.btn-primair:hover:not(:disabled) { background: var(--teal-dark); }
+.btn-primair:hover:not(:disabled) { background: var(--oranje-dark); }
 .btn-primair:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primair.btn-volledig { width: 100%; }
 
