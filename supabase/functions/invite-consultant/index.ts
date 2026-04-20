@@ -5,9 +5,19 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 )
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: CORS })
+  }
+
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
+    return new Response('Method not allowed', { status: 405, headers: CORS })
   }
 
   try {
@@ -15,11 +25,10 @@ Deno.serve(async (req) => {
 
     if (!naam || !email || !functieniveau) {
       return new Response(JSON.stringify({ fout: 'naam, email en functieniveau zijn verplicht' }), {
-        status: 400, headers: { 'Content-Type': 'application/json' }
+        status: 400, headers: { ...CORS, 'Content-Type': 'application/json' }
       })
     }
 
-    // Maak auth gebruiker aan
     const { data: authData, error: authError } = await supabase.auth.admin.createUser({
       email,
       email_confirm: true,
@@ -29,7 +38,6 @@ Deno.serve(async (req) => {
 
     const userId = authData.user.id
 
-    // Maak consultant record aan
     const { error: consError } = await supabase.from('consultants').insert({
       id: userId,
       naam,
@@ -41,31 +49,19 @@ Deno.serve(async (req) => {
     })
 
     if (consError) {
-      // Verwijder auth gebruiker als consultant insert mislukt
       await supabase.auth.admin.deleteUser(userId)
       throw consError
     }
 
-    // Stuur magic link email
-    const { error: linkError } = await supabase.auth.admin.generateLink({
-      type: 'magiclink',
-      email,
-      options: {
-        redirectTo: `${Deno.env.get('SITE_URL') ?? 'https://resource-planner.vercel.app'}/mijn-week`,
-      },
-    })
-
-    if (linkError) console.warn('Magic link genereren mislukt:', linkError)
-
     return new Response(
       JSON.stringify({ bericht: `Consultant ${naam} aangemaakt`, id: userId }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } }
     )
   } catch (err) {
     console.error('Fout bij aanmaken consultant:', err)
     return new Response(
       JSON.stringify({ fout: String(err) }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }
     )
   }
 })

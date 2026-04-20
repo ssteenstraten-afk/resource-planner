@@ -35,9 +35,13 @@ export function Login() {
     <div className="login-pagina">
       <div className="login-kaart">
         <div className="login-logo">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <rect width="40" height="40" rx="8" fill="#2563eb" />
-            <path d="M10 28V12h6l4 10 4-10h6v16h-4V18l-3.5 8h-5L14 18v10h-4z" fill="white" />
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="19" rx="2" fill="var(--oranje)"/>
+            <path d="M2 8h20" stroke="white" strokeWidth="1.8"/>
+            <path d="M7 1v4M17 1v4" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+            <circle cx="8" cy="13" r="1.8" fill="white"/>
+            <circle cx="16" cy="13" r="1.8" fill="white"/>
+            <circle cx="8" cy="18" r="1.8" fill="white"/>
           </svg>
         </div>
         <h1 className="login-titel">Resource Planner</h1>
