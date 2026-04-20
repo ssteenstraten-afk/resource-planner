@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 
+type Modus = 'wachtwoord' | 'magiclink'
+
 export function Login() {
   const [email, setEmail] = useState('')
+  const [wachtwoord, setWachtwoord] = useState('')
+  const [modus, setModus] = useState<Modus>('wachtwoord')
   const [verzonden, setVerzonden] = useState(false)
   const [fout, setFout] = useState<string | null>(null)
   const [laden, setLaden] = useState(false)
@@ -12,17 +16,17 @@ export function Login() {
     setLaden(true)
     setFout(null)
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-
-    if (error) {
-      setFout(error.message)
+    if (modus === 'wachtwoord') {
+      const { error } = await supabase.auth.signInWithPassword({ email, password: wachtwoord })
+      if (error) setFout(error.message)
+      // AuthCallback niet nodig — useAuth pikt de sessie automatisch op
     } else {
-      setVerzonden(true)
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      })
+      if (error) setFout(error.message)
+      else setVerzonden(true)
     }
     setLaden(false)
   }
@@ -64,9 +68,35 @@ export function Login() {
                 className="form-invoer"
               />
             </div>
+
+            {modus === 'wachtwoord' && (
+              <div className="form-veld">
+                <label htmlFor="wachtwoord">Wachtwoord</label>
+                <input
+                  id="wachtwoord"
+                  type="password"
+                  value={wachtwoord}
+                  onChange={e => setWachtwoord(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="form-invoer"
+                />
+              </div>
+            )}
+
             {fout && <div className="form-fout">{fout}</div>}
+
             <button type="submit" className="btn-primair btn-volledig" disabled={laden}>
-              {laden ? 'Versturen...' : 'Stuur inloglink'}
+              {laden ? 'Inloggen...' : modus === 'wachtwoord' ? 'Inloggen' : 'Stuur inloglink'}
+            </button>
+
+            <button
+              type="button"
+              className="btn-tekst"
+              style={{ textAlign: 'center', width: '100%' }}
+              onClick={() => { setModus(m => m === 'wachtwoord' ? 'magiclink' : 'wachtwoord'); setFout(null) }}
+            >
+              {modus === 'wachtwoord' ? 'Liever een magic link?' : 'Inloggen met wachtwoord'}
             </button>
           </form>
         )}
