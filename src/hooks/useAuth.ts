@@ -17,13 +17,14 @@ export function useAuth(): AuthState {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [consultant, setConsultant] = useState<Consultant | null>(null)
-  const [laden, setLaden] = useState(true)
+  const [initieel, setInitieel] = useState(true)
+  const [laden, setLaden] = useState(false)
 
   useEffect(() => {
-    // Haal huidige sessie op
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
+      if (!session) setInitieel(false)
     })
 
     // Luister naar auth wijzigingen
@@ -40,7 +41,7 @@ export function useAuth(): AuthState {
   useEffect(() => {
     if (!user) {
       setConsultant(null)
-      setLaden(false)
+      setInitieel(false)
       return
     }
 
@@ -58,6 +59,7 @@ export function useAuth(): AuthState {
           setConsultant(data)
         }
         setLaden(false)
+        setInitieel(false)
       })
   }, [user])
 
@@ -66,6 +68,6 @@ export function useAuth(): AuthState {
     user,
     consultant,
     rol: consultant?.rol ?? null,
-    laden,
+    laden: initieel || laden,
   }
 }
