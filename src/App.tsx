@@ -8,6 +8,13 @@ import { ConsultantDetail } from './pages/ConsultantDetail'
 import { Projectbeheer } from './pages/Projectbeheer'
 import { NavBar } from './components/NavBar'
 
+function LoginRoute() {
+  const { session, rol, laden } = useAuth()
+  if (laden) return <div className="laden-scherm"><div className="laden-spinner" /></div>
+  if (session && rol) return <Navigate to={rol === 'planner' ? '/dashboard' : '/mijn-week'} replace />
+  return <Login />
+}
+
 function PrivateRoute({
   children,
   vereistRol,
@@ -37,7 +44,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginRoute />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route
           path="/mijn-week"

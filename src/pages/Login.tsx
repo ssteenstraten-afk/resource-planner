@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 type Modus = 'wachtwoord' | 'magiclink'
@@ -11,7 +10,6 @@ export function Login() {
   const [verzonden, setVerzonden] = useState(false)
   const [fout, setFout] = useState<string | null>(null)
   const [laden, setLaden] = useState(false)
-  const navigate = useNavigate()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -19,17 +17,9 @@ export function Login() {
     setFout(null)
 
     if (modus === 'wachtwoord') {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password: wachtwoord })
-      if (error) {
-        setFout(error.message)
-      } else if (data.user) {
-        const { data: consultant } = await supabase
-          .from('consultants')
-          .select('rol')
-          .eq('id', data.user.id)
-          .single()
-        navigate(consultant?.rol === 'planner' ? '/dashboard' : '/mijn-week')
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password: wachtwoord })
+      if (error) setFout(error.message)
+      // App.tsx LoginRoute handelt de redirect af zodra de sessie beschikbaar is
     } else {
       const { error } = await supabase.auth.signInWithOtp({
         email,
