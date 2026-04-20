@@ -35,7 +35,7 @@ export function Dashboard() {
     async function laad() {
       setLaden(true)
       const [consResult, bezResult] = await Promise.all([
-        supabase.from('consultants').select('*').eq('actief', true).order('naam'),
+        supabase.from('consultants').select('*').eq('actief', true).eq('rol', 'consultant').order('naam'),
         supabase
           .from('bezetting')
           .select('*')
@@ -219,10 +219,10 @@ export function Dashboard() {
       })()}
 
       <div className="legenda">
-        <span className="legenda-item legenda-groen">≥ 80% bezet</span>
+        <span className="legenda-item legenda-rood">&lt; 60% — onderbezet</span>
         <span className="legenda-item legenda-oranje">60–79%</span>
-        <span className="legenda-item legenda-rood">&lt; 60%</span>
-        <span className="legenda-item legenda-paars">&gt; 100%</span>
+        <span className="legenda-item legenda-groen">≥ 80% — goed bezet</span>
+        <span className="legenda-item legenda-paars">&gt; 100% — overbezet</span>
       </div>
     </div>
   )

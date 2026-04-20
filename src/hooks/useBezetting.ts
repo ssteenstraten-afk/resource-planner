@@ -82,8 +82,11 @@ export function useBezetting(
   }, [laadData])
 
   // Bouw BezettingRij structuur op
-  // Toon alle actieve projecten (consultant kan overal uren invullen)
-  const getoondProjecten = projecten
+  // Toon alleen projecten waar de consultant bezetting voor heeft + systeemprojecten
+  const toegewezenProjectIds = new Set(bezettingen.map(b => b.project_id))
+  const getoondProjecten = projecten.filter(
+    p => p.is_systeem || toegewezenProjectIds.has(p.id)
+  )
 
   const rijen: BezettingRij[] = getoondProjecten.map(project => {
     const wkenMap: Record<string, number> = {}

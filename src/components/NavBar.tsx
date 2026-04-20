@@ -26,6 +26,7 @@ export function NavBar() {
           <>
             <Link to="/dashboard" className="nav-link">Dashboard</Link>
             <Link to="/dashboard/projecten" className="nav-link">Projecten</Link>
+            <Link to="/dashboard/consultants" className="nav-link">Consultants</Link>
           </>
         )}
         {rol === 'consultant' && (

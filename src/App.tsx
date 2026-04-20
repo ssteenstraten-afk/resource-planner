@@ -6,11 +6,11 @@ import { MijnWeek } from './pages/MijnWeek'
 import { Dashboard } from './pages/Dashboard'
 import { ConsultantDetail } from './pages/ConsultantDetail'
 import { Projectbeheer } from './pages/Projectbeheer'
+import { Consultantbeheer } from './pages/Consultantbeheer'
 import { NavBar } from './components/NavBar'
 
 function LoginRoute() {
-  const { session, rol, laden } = useAuth()
-  if (laden) return <div className="laden-scherm"><div className="laden-spinner" /></div>
+  const { session, rol } = useAuth()
   if (session && rol) return <Navigate to={rol === 'planner' ? '/dashboard' : '/mijn-week'} replace />
   return <Login />
 }
@@ -79,6 +79,15 @@ export default function App() {
             <PrivateRoute vereistRol="planner">
               <NavBar />
               <Projectbeheer />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/consultants"
+          element={
+            <PrivateRoute vereistRol="planner">
+              <NavBar />
+              <Consultantbeheer />
             </PrivateRoute>
           }
         />

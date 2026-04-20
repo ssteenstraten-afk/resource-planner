@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(npm run *)",
-      "Bash(node -e \"const p = require\\('./node_modules/@supabase/supabase-js/package.json'\\); console.log\\(p.version\\)\")"
+      "Bash(node -e \"const p = require\\('./node_modules/@supabase/supabase-js/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)",
+      "WebFetch(domain:vintura.nl)",
+      "WebSearch",
+      "WebFetch(domain:www.vintura.com)",
+      "Bash(curl -s \"https://www.vintura.com/nl/\")",
+      "Bash(grep -oE '#[0-9a-fA-F]{3,6}')"
     ]
   }
 }
