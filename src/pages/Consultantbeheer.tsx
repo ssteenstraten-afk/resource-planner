@@ -17,7 +17,7 @@ export function Consultantbeheer() {
   const [succes, setSucces] = useState<string | null>(null)
 
   const [formulier, setFormulier] = useState({
-    naam: '', email: '', functieniveau: 'Medior', contract_uren: 40, rol: 'consultant' as 'consultant' | 'planner'
+    naam: '', email: '', functieniveau: 'Consultant', contract_uren: 40, rol: 'consultant' as 'consultant' | 'planner'
   })
 
   async function laadConsultants() {
@@ -45,14 +45,14 @@ export function Consultantbeheer() {
       })
 
       const data = await res.json()
-      if (!res.ok) throw new Error(data.fout ?? 'Onbekende fout')
+      if (!res.ok) throw new Error(data.fout ?? 'Unknown error')
 
-      setSucces(`${formulier.naam} is aangemaakt. Ze kunnen nu inloggen via hun e-mailadres.`)
-      setFormulier({ naam: '', email: '', functieniveau: 'Medior', contract_uren: 40, rol: 'consultant' })
+      setSucces(`${formulier.naam} has been created. They can now sign in with their email address.`)
+      setFormulier({ naam: '', email: '', functieniveau: 'Consultant', contract_uren: 40, rol: 'consultant' })
       setToonFormulier(false)
       await laadConsultants()
     } catch (err) {
-      setFout(err instanceof Error ? err.message : 'Aanmaken mislukt')
+      setFout(err instanceof Error ? err.message : 'Failed to create user')
     } finally {
       setOpslaan(false)
     }
@@ -64,18 +64,18 @@ export function Consultantbeheer() {
   }
 
   if (laden) {
-    return <div className="laden-scherm"><div className="laden-spinner" /><p>Laden...</p></div>
+    return <div className="laden-scherm"><div className="laden-spinner" /><p>Loading...</p></div>
   }
 
   return (
     <div className="pagina-wrapper">
       <div className="pagina-header">
         <div>
-          <button className="btn-terug" onClick={() => navigate('/dashboard')}>← Terug naar dashboard</button>
-          <h1 className="pagina-titel">Consultantbeheer</h1>
+          <button className="btn-terug" onClick={() => navigate('/dashboard')}>← Back to dashboard</button>
+          <h1 className="pagina-titel">User management</h1>
         </div>
         <button className="btn-primair" onClick={() => { setToonFormulier(t => !t); setFout(null); setSucces(null) }}>
-          {toonFormulier ? 'Annuleer' : '+ Nieuwe gebruiker'}
+          {toonFormulier ? 'Cancel' : '+ New user'}
         </button>
       </div>
 
@@ -87,25 +87,25 @@ export function Consultantbeheer() {
 
       {toonFormulier && (
         <div className="formulier-kaart">
-          <h2 className="formulier-titel">Nieuwe gebruiker aanmaken</h2>
+          <h2 className="formulier-titel">Create new user</h2>
           <form onSubmit={handleOpslaan}>
             <div className="form-rij">
               <div className="form-veld">
-                <label>Volledige naam *</label>
+                <label>Full name *</label>
                 <input type="text" required value={formulier.naam}
                   onChange={e => setFormulier(f => ({ ...f, naam: e.target.value }))}
-                  className="form-invoer" placeholder="Voor- en achternaam" />
+                  className="form-invoer" placeholder="First and last name" />
               </div>
               <div className="form-veld">
-                <label>E-mailadres *</label>
+                <label>Email address *</label>
                 <input type="email" required value={formulier.email}
                   onChange={e => setFormulier(f => ({ ...f, email: e.target.value }))}
-                  className="form-invoer" placeholder="naam@vintura.nl" />
+                  className="form-invoer" placeholder="name@vintura.nl" />
               </div>
             </div>
             <div className="form-rij">
               <div className="form-veld">
-                <label>Functieniveau *</label>
+                <label>Level *</label>
                 <select value={formulier.functieniveau}
                   onChange={e => setFormulier(f => ({ ...f, functieniveau: e.target.value }))}
                   className="form-invoer">
@@ -113,13 +113,13 @@ export function Consultantbeheer() {
                 </select>
               </div>
               <div className="form-veld">
-                <label>Contracturen / week</label>
+                <label>Contract hours / week</label>
                 <input type="number" min="1" max="40" value={formulier.contract_uren}
                   onChange={e => setFormulier(f => ({ ...f, contract_uren: parseInt(e.target.value) }))}
                   className="form-invoer" />
               </div>
               <div className="form-veld">
-                <label>Rol</label>
+                <label>Role</label>
                 <select value={formulier.rol}
                   onChange={e => setFormulier(f => ({ ...f, rol: e.target.value as 'consultant' | 'planner' }))}
                   className="form-invoer">
@@ -131,9 +131,9 @@ export function Consultantbeheer() {
             {fout && <div className="form-fout" style={{ marginTop: 12 }}>{fout}</div>}
             <div className="form-acties" style={{ marginTop: 16 }}>
               <button type="submit" className="btn-primair" disabled={opslaan}>
-                {opslaan ? 'Aanmaken...' : 'Gebruiker aanmaken'}
+                {opslaan ? 'Creating...' : 'Create user'}
               </button>
-              <button type="button" className="btn-secundair" onClick={() => setToonFormulier(false)}>Annuleer</button>
+              <button type="button" className="btn-secundair" onClick={() => setToonFormulier(false)}>Cancel</button>
             </div>
           </form>
         </div>
@@ -143,13 +143,13 @@ export function Consultantbeheer() {
         <table className="data-tabel">
           <thead>
             <tr>
-              <th>Naam</th>
-              <th>E-mail</th>
-              <th>Niveau</th>
-              <th>Uren/week</th>
-              <th>Rol</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Level</th>
+              <th>Hours/week</th>
+              <th>Role</th>
               <th>Status</th>
-              <th>Acties</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -158,12 +158,12 @@ export function Consultantbeheer() {
                 <td style={{ fontWeight: 600 }}>{c.naam}</td>
                 <td style={{ color: 'var(--grijs-500)' }}>{c.email}</td>
                 <td>{c.functieniveau}</td>
-                <td>{c.contract_uren}u</td>
+                <td>{c.contract_uren}h</td>
                 <td><span className={`badge ${c.rol === 'planner' ? 'badge-systeem' : 'badge-actief'}`}>{c.rol}</span></td>
-                <td><span className={`badge ${c.actief ? 'badge-actief' : 'badge-afgesloten'}`}>{c.actief ? 'actief' : 'inactief'}</span></td>
+                <td><span className={`badge ${c.actief ? 'badge-actief' : 'badge-afgesloten'}`}>{c.actief ? 'active' : 'inactive'}</span></td>
                 <td>
                   <button className="btn-tekst" onClick={() => handleDeactiveer(c)}>
-                    {c.actief ? 'Deactiveren' : 'Activeren'}
+                    {c.actief ? 'Deactivate' : 'Activate'}
                   </button>
                 </td>
               </tr>

@@ -98,7 +98,7 @@ export function Dashboard() {
     return (
       <div className="laden-scherm">
         <div className="laden-spinner" />
-        <p>Dashboard laden...</p>
+        <p>Loading dashboard...</p>
       </div>
     )
   }
@@ -106,26 +106,26 @@ export function Dashboard() {
   return (
     <div className="pagina-wrapper" onClick={() => setTooltipInfo(null)}>
       <div className="pagina-header">
-        <h1 className="pagina-titel">Bezettingsoverzicht</h1>
+        <h1 className="pagina-titel">Capacity overview</h1>
       </div>
 
       <div className="dashboard-filters">
         <select value={filterNiveau} onChange={e => setFilterNiveau(e.target.value)} className="filter-select">
           {niveaus.map(n => (
-            <option key={n} value={n}>{n === 'alle' ? 'Alle niveaus' : n}</option>
+            <option key={n} value={n}>{n === 'alle' ? 'All levels' : n}</option>
           ))}
         </select>
         <select value={filterNaam} onChange={e => setFilterNaam(e.target.value)} className="filter-select" style={{ minWidth: 180 }}>
-          <option value="alle">Alle consultants</option>
+          <option value="alle">All consultants</option>
           {consultants.map(c => (
             <option key={c.id} value={c.id}>{c.naam}</option>
           ))}
         </select>
         <div className="week-navigatie">
-          <button className="btn-icon" onClick={() => setWeekOffset(o => o - 1)} title="Vorige week">‹</button>
+          <button className="btn-icon" onClick={() => setWeekOffset(o => o - 1)} title="Previous week">‹</button>
           <span className="week-nav-label">{weken[0].label} – {weken[weken.length - 1].label}</span>
-          <button className="btn-icon" onClick={() => setWeekOffset(o => o + 1)} title="Volgende week">›</button>
-          <button className="btn-tekst" onClick={() => setWeekOffset(0)}>Vandaag</button>
+          <button className="btn-icon" onClick={() => setWeekOffset(o => o + 1)} title="Next week">›</button>
+          <button className="btn-tekst" onClick={() => setWeekOffset(0)}>Today</button>
         </div>
       </div>
 
@@ -183,12 +183,12 @@ export function Dashboard() {
           >
             <div className="tooltip-header">wk{week} {jaar}</div>
             {bezRijen.length === 0 ? (
-              <div className="tooltip-rij">Geen bezetting</div>
+              <div className="tooltip-rij">No allocation</div>
             ) : (
               bezRijen.map(b => (
                 <div key={b.id} className="tooltip-rij">
                   <span>{projectNaam.get(b.project_id) ?? '—'}</span>
-                  <span className="tooltip-uren">{b.uren}u</span>
+                  <span className="tooltip-uren">{b.uren}h</span>
                 </div>
               ))
             )}
@@ -197,10 +197,10 @@ export function Dashboard() {
       })()}
 
       <div className="legenda">
-        <span className="legenda-item legenda-rood">&lt; 60% — onderbezet</span>
+        <span className="legenda-item legenda-rood">&lt; 60% — underallocated</span>
         <span className="legenda-item legenda-oranje">60–79%</span>
-        <span className="legenda-item legenda-groen">≥ 80% — goed bezet</span>
-        <span className="legenda-item legenda-paars">&gt; 100% — overbezet</span>
+        <span className="legenda-item legenda-groen">≥ 80% — well allocated</span>
+        <span className="legenda-item legenda-paars">&gt; 100% — overallocated</span>
       </div>
     </div>
   )

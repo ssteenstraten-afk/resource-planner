@@ -9,10 +9,10 @@ export function BeschikbaarheidBar({ weken, contractUren }: Props) {
   return (
     <tfoot>
       <tr className="rij-bezet">
-        <td className="rij-label">Bezet</td>
+        <td className="rij-label">Allocated</td>
         {weken.map(w => (
           <td key={w.key} className="rij-waarde">
-            {w.totaalUren}u
+            {w.totaalUren}h
           </td>
         ))}
       </tr>
@@ -20,12 +20,12 @@ export function BeschikbaarheidBar({ weken, contractUren }: Props) {
         <td className="rij-label">Contract</td>
         {weken.map(w => (
           <td key={w.key} className="rij-waarde">
-            {contractUren}u
+            {contractUren}h
           </td>
         ))}
       </tr>
       <tr className="rij-beschikbaar">
-        <td className="rij-label">Beschikbaar</td>
+        <td className="rij-label">Available</td>
         {weken.map(w => {
           const info = berekenBeschikbaarheid(w.totaalUren, contractUren)
           return (
@@ -33,7 +33,7 @@ export function BeschikbaarheidBar({ weken, contractUren }: Props) {
               key={w.key}
               className={`rij-waarde beschikbaar-${info.status}`}
               style={{ backgroundColor: info.achtergrondKleur, color: info.tekstKleur }}
-              title={`${info.percentage}% bezet`}
+              title={`${info.percentage}% allocated`}
             >
               {beschikbaarheidLabel(info)}
             </td>
@@ -41,7 +41,7 @@ export function BeschikbaarheidBar({ weken, contractUren }: Props) {
         })}
       </tr>
       <tr className="rij-percentage">
-        <td className="rij-label">% bezet</td>
+        <td className="rij-label">% allocated</td>
         {weken.map(w => {
           const info = berekenBeschikbaarheid(w.totaalUren, contractUren)
           return (

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resource Planner — Technische Documentatie</title>
+<title>Resource Planner — Technical Documentation</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,6 @@
     line-height: 1.6;
   }
 
-  /* COVER */
   .cover {
     min-height: 100vh;
     display: flex;
@@ -73,15 +72,10 @@
     margin-bottom: 48px;
   }
 
-  .cover-meta {
-    display: flex;
-    gap: 40px;
-  }
-
+  .cover-meta { display: flex; gap: 40px; }
   .cover-meta-item { color: rgba(255,255,255,0.6); font-size: 10pt; }
   .cover-meta-item strong { color: white; display: block; font-size: 11pt; }
 
-  /* PAGINA LAYOUT */
   .pagina {
     padding: 60px 64px;
     page-break-after: always;
@@ -90,7 +84,6 @@
 
   .pagina:last-child { page-break-after: auto; }
 
-  /* HEADERS */
   .sectie-label {
     font-size: 9pt;
     font-weight: 700;
@@ -127,7 +120,6 @@
 
   p { margin-bottom: 10px; color: #444; }
 
-  /* TECH STACK KAARTEN */
   .stack-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -160,28 +152,15 @@
     border-radius: 4px;
   }
 
-  .stack-naam {
-    font-size: 13pt;
-    font-weight: 700;
-    color: var(--donker);
-  }
+  .stack-naam { font-size: 13pt; font-weight: 700; color: var(--donker); }
+  .stack-beschrijving { font-size: 10pt; color: var(--grijs-500); margin-bottom: 10px; }
 
-  .stack-beschrijving {
-    font-size: 10pt;
-    color: var(--grijs-500);
-    margin-bottom: 10px;
-  }
-
-  .stack-features {
-    list-style: none;
-    padding: 0;
-  }
+  .stack-features { list-style: none; padding: 0; }
 
   .stack-features li {
     font-size: 10pt;
     color: #444;
-    padding: 3px 0;
-    padding-left: 14px;
+    padding: 3px 0 3px 14px;
     position: relative;
   }
 
@@ -193,7 +172,6 @@
     font-size: 9pt;
   }
 
-  /* USE CASES */
   .use-case {
     border-left: 4px solid var(--oranje);
     padding: 16px 20px;
@@ -225,11 +203,7 @@
     margin-top: 1px;
   }
 
-  .use-case-titel {
-    font-size: 11pt;
-    font-weight: 700;
-    color: var(--donker);
-  }
+  .use-case-titel { font-size: 11pt; font-weight: 700; color: var(--donker); }
 
   .use-case-rol {
     font-size: 8pt;
@@ -246,17 +220,9 @@
   .rol-planner { background: #dbeafe; color: #1d4ed8; }
   .rol-systeem { background: #ede9fe; color: #5b21b6; }
 
-  .use-case-body {
-    font-size: 10pt;
-    color: #555;
-    margin-left: 36px;
-  }
+  .use-case-body { font-size: 10pt; color: #555; margin-left: 36px; }
 
-  .use-case-stappen {
-    list-style: none;
-    padding: 0;
-    margin-top: 6px;
-  }
+  .use-case-stappen { list-style: none; padding: 0; margin-top: 6px; }
 
   .use-case-stappen li {
     padding: 2px 0 2px 16px;
@@ -277,7 +243,6 @@
 
   .stappen-lijst { counter-reset: stap; }
 
-  /* DATAMODEL TABEL */
   .data-tabel {
     width: 100%;
     border-collapse: collapse;
@@ -311,7 +276,6 @@
     color: #c2410c;
   }
 
-  /* ARCHITECTUUR */
   .arch-diagram {
     display: flex;
     align-items: center;
@@ -336,22 +300,12 @@
     letter-spacing: 0.05em;
   }
 
-  .arch-blok-sub {
-    font-size: 8pt;
-    color: rgba(255,255,255,0.55);
-    margin-top: 2px;
-  }
-
+  .arch-blok-sub { font-size: 8pt; color: rgba(255,255,255,0.55); margin-top: 2px; }
   .arch-blok.oranje { background: var(--oranje); }
   .arch-blok.teal { background: var(--teal); }
 
-  .arch-pijl {
-    font-size: 18pt;
-    color: var(--grijs-200);
-    padding: 0 8px;
-  }
+  .arch-pijl { font-size: 18pt; color: var(--grijs-200); padding: 0 8px; }
 
-  /* ENV TABEL */
   .env-tabel {
     width: 100%;
     border-collapse: collapse;
@@ -368,12 +322,58 @@
     border-bottom: 2px solid var(--grijs-200);
   }
 
-  .env-tabel td {
-    padding: 7px 12px;
-    border-bottom: 1px solid var(--grijs-200);
+  .env-tabel td { padding: 7px 12px; border-bottom: 1px solid var(--grijs-200); }
+
+  .backlog-item {
+    border-left: 4px solid var(--teal);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    background: var(--grijs-100);
+    border-radius: 0 8px 8px 0;
+    page-break-inside: avoid;
   }
 
-  /* PRINT */
+  .backlog-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .backlog-nr {
+    background: var(--teal);
+    color: white;
+    font-size: 9pt;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .backlog-titel { font-size: 11pt; font-weight: 700; color: var(--donker); }
+
+  .backlog-priority {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .prio-high { background: #fee2e2; color: #b91c1c; }
+  .prio-medium { background: #fff7ed; color: #c2410c; }
+  .prio-low { background: #f0fdf4; color: #15803d; }
+
+  .backlog-body { font-size: 10pt; color: #555; margin-left: 36px; }
+
   @media print {
     body { font-size: 10pt; }
     .cover { min-height: 100vh; }
@@ -390,21 +390,21 @@
   <div class="cover-content">
     <div class="cover-label">Vintura Consultancy</div>
     <div class="cover-titel">Resource<br>Planner</div>
-    <div class="cover-subtitel">Technische documentatie &amp; use cases</div>
+    <div class="cover-subtitel">Technical documentation &amp; use cases</div>
     <div class="cover-meta">
-      <div class="cover-meta-item"><strong>Versie</strong>1.0</div>
-      <div class="cover-meta-item"><strong>Datum</strong>April 2026</div>
-      <div class="cover-meta-item"><strong>Status</strong>In productie</div>
+      <div class="cover-meta-item"><strong>Version</strong>1.0</div>
+      <div class="cover-meta-item"><strong>Date</strong>April 2026</div>
+      <div class="cover-meta-item"><strong>Status</strong>In production</div>
     </div>
   </div>
 </div>
 
 <!-- TECH STACK -->
 <div class="pagina">
-  <div class="sectie-label">Technische infrastructuur</div>
+  <div class="sectie-label">Technical infrastructure</div>
   <h1>Tech Stack</h1>
 
-  <p>De Resource Planner is gebouwd op een moderne, serverloze architectuur. Alle componenten draaien in de cloud en vereisen geen eigen serverinfrastructuur.</p>
+  <p>The Resource Planner is built on a modern, serverless architecture. All components run in the cloud and require no server infrastructure of their own.</p>
 
   <div class="arch-diagram">
     <div class="arch-blok oranje">
@@ -424,7 +424,7 @@
     <div class="arch-pijl">→</div>
     <div class="arch-blok">
       <div class="arch-blok-naam">Resend</div>
-      <div class="arch-blok-sub">E-mail</div>
+      <div class="arch-blok-sub">Email</div>
     </div>
   </div>
 
@@ -434,13 +434,13 @@
         <span class="stack-badge">Frontend</span>
         <span class="stack-naam">React + Vite</span>
       </div>
-      <div class="stack-beschrijving">Single-page applicatie met TypeScript</div>
+      <div class="stack-beschrijving">Single-page application with TypeScript</div>
       <ul class="stack-features">
-        <li>React 19 met TypeScript</li>
-        <li>Vite als build tool</li>
-        <li>React Router voor navigatie</li>
-        <li>date-fns voor ISO weekberekeningen</li>
-        <li>Bebas Neue + Arial Narrow (Vintura huisstijl)</li>
+        <li>React 19 with TypeScript</li>
+        <li>Vite as build tool</li>
+        <li>React Router for navigation</li>
+        <li>date-fns for ISO week calculations</li>
+        <li>Bebas Neue + Arial Narrow (Vintura branding)</li>
       </ul>
     </div>
 
@@ -449,13 +449,13 @@
         <span class="stack-badge">Database</span>
         <span class="stack-naam">Supabase</span>
       </div>
-      <div class="stack-beschrijving">PostgreSQL database met realtime en auth</div>
+      <div class="stack-beschrijving">PostgreSQL database with realtime and auth</div>
       <ul class="stack-features">
-        <li>PostgreSQL 17 (gehoste database)</li>
-        <li>Row Level Security per gebruikersrol</li>
-        <li>Magic link authenticatie</li>
+        <li>PostgreSQL 17 (hosted database)</li>
+        <li>Row Level Security per user role</li>
+        <li>Magic link authentication</li>
         <li>Edge Functions (Deno runtime)</li>
-        <li>Automatische audit log via triggers</li>
+        <li>Automated cron jobs via pg_cron</li>
       </ul>
     </div>
 
@@ -464,116 +464,114 @@
         <span class="stack-badge">Hosting</span>
         <span class="stack-naam">Vercel</span>
       </div>
-      <div class="stack-beschrijving">Globaal CDN met automatische deploys</div>
+      <div class="stack-beschrijving">Global CDN with automatic deployments</div>
       <ul class="stack-features">
-        <li>Automatische deploy bij elke git push</li>
+        <li>Automatic deploy on every git push</li>
         <li>HTTPS out of the box</li>
-        <li>SPA rewrites voor React Router</li>
-        <li>Environment variables voor API keys</li>
+        <li>SPA rewrites for React Router</li>
+        <li>Environment variables for API keys</li>
       </ul>
     </div>
 
     <div class="stack-kaart">
       <div class="stack-kaart-header">
-        <span class="stack-badge">E-mail</span>
+        <span class="stack-badge">Email</span>
         <span class="stack-naam">Resend</span>
       </div>
-      <div class="stack-beschrijving">Transactionele e-mail API</div>
+      <div class="stack-beschrijving">Transactional email API</div>
       <ul class="stack-features">
-        <li>Wekelijkse bezettingsemails (maandag 07:00)</li>
-        <li>HTML emails met inline Vintura styling</li>
-        <li>Magic link ingebed in email</li>
-        <li>Aangestuurd vanuit Supabase Edge Function</li>
+        <li>Weekly allocation emails (Monday 07:00)</li>
+        <li>HTML emails with inline Vintura styling</li>
+        <li>Magic link embedded in email</li>
+        <li>Triggered from Supabase Edge Function</li>
       </ul>
     </div>
   </div>
 
-  <h2>Omgevingsvariabelen</h2>
+  <h2>Environment Variables</h2>
   <table class="env-tabel">
     <thead>
-      <tr><th>Variabele</th><th>Locatie</th><th>Doel</th></tr>
+      <tr><th>Variable</th><th>Location</th><th>Purpose</th></tr>
     </thead>
     <tbody>
       <tr><td><code>VITE_SUPABASE_URL</code></td><td>Vercel</td><td>Supabase project endpoint</td></tr>
-      <tr><td><code>VITE_SUPABASE_ANON_KEY</code></td><td>Vercel</td><td>Publieke API sleutel voor de browser</td></tr>
-      <tr><td><code>SUPABASE_SERVICE_ROLE_KEY</code></td><td>Supabase Secrets</td><td>Admin toegang voor edge functions</td></tr>
-      <tr><td><code>RESEND_API_KEY</code></td><td>Supabase Secrets</td><td>E-mail verzending via Resend</td></tr>
-      <tr><td><code>SITE_URL</code></td><td>Supabase Secrets</td><td>Basis-URL voor magic links in emails</td></tr>
+      <tr><td><code>VITE_SUPABASE_ANON_KEY</code></td><td>Vercel</td><td>Public API key for the browser</td></tr>
+      <tr><td><code>SUPABASE_SERVICE_ROLE_KEY</code></td><td>Supabase Secrets</td><td>Admin access for edge functions</td></tr>
+      <tr><td><code>RESEND_API_KEY</code></td><td>Supabase Secrets</td><td>Email delivery via Resend</td></tr>
+      <tr><td><code>SITE_URL</code></td><td>Supabase Secrets</td><td>Base URL for magic links in emails</td></tr>
+      <tr><td><code>FROM_EMAIL</code></td><td>Supabase Secrets</td><td>Sender address for weekly emails</td></tr>
     </tbody>
   </table>
 </div>
 
-<!-- DATAMODEL -->
+<!-- DATA MODEL -->
 <div class="pagina">
   <div class="sectie-label">Database</div>
-  <h1>Datamodel</h1>
+  <h1>Data Model</h1>
 
-  <h2>Tabellen</h2>
+  <h2>Tables</h2>
 
   <h3>consultants</h3>
-  <p>Bevat alle gebruikers van de applicatie, zowel consultants als planners.</p>
+  <p>Contains all users of the application, both consultants and planners.</p>
   <table class="data-tabel">
-    <thead><tr><th>Kolom</th><th>Type</th><th>Beschrijving</th></tr></thead>
+    <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>id</code></td><td>uuid</td><td>Identiek aan Supabase Auth user ID</td></tr>
-      <tr><td><code>naam</code></td><td>text</td><td>Volledige naam</td></tr>
-      <tr><td><code>email</code></td><td>text</td><td>Uniek e-mailadres</td></tr>
+      <tr><td><code>id</code></td><td>uuid</td><td>Matches Supabase Auth user ID</td></tr>
+      <tr><td><code>naam</code></td><td>text</td><td>Full name</td></tr>
+      <tr><td><code>email</code></td><td>text</td><td>Unique email address</td></tr>
       <tr><td><code>functieniveau</code></td><td>text</td><td>Consultant / Senior Consultant / Manager etc.</td></tr>
-      <tr><td><code>contract_uren</code></td><td>integer</td><td>Contracturen per week (standaard 40)</td></tr>
-      <tr><td><code>actief</code></td><td>boolean</td><td>Of de consultant actief is</td></tr>
-      <tr><td><code>rol</code></td><td>text</td><td>'consultant' of 'planner'</td></tr>
+      <tr><td><code>contract_uren</code></td><td>integer</td><td>Contract hours per week (default 40)</td></tr>
+      <tr><td><code>actief</code></td><td>boolean</td><td>Whether the consultant is active</td></tr>
+      <tr><td><code>rol</code></td><td>text</td><td>'consultant' or 'planner'</td></tr>
     </tbody>
   </table>
 
   <h3>projecten</h3>
   <table class="data-tabel">
-    <thead><tr><th>Kolom</th><th>Type</th><th>Beschrijving</th></tr></thead>
+    <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>id</code></td><td>uuid</td><td>Primaire sleutel</td></tr>
-      <tr><td><code>naam</code></td><td>text</td><td>Projectnaam</td></tr>
-      <tr><td><code>klant</code></td><td>text</td><td>Klantnaam (optioneel)</td></tr>
-      <tr><td><code>startdatum / einddatum</code></td><td>date</td><td>Projectperiode</td></tr>
-      <tr><td><code>status</code></td><td>text</td><td>'actief' of 'afgesloten'</td></tr>
-      <tr><td><code>is_systeem</code></td><td>boolean</td><td>Systeemprojecten: Verlof, Bench</td></tr>
+      <tr><td><code>id</code></td><td>uuid</td><td>Primary key</td></tr>
+      <tr><td><code>naam</code></td><td>text</td><td>Project name</td></tr>
+      <tr><td><code>klant</code></td><td>text</td><td>Client name (optional)</td></tr>
+      <tr><td><code>startdatum / einddatum</code></td><td>date</td><td>Project period</td></tr>
+      <tr><td><code>status</code></td><td>text</td><td>'actief' (active) or 'afgesloten' (closed)</td></tr>
+      <tr><td><code>is_systeem</code></td><td>boolean</td><td>System projects: Leave, Bench</td></tr>
     </tbody>
   </table>
 
   <h3>bezetting</h3>
-  <p>Kernentiteit: hoeveel uur werkt een consultant in een bepaalde week aan een project.</p>
+  <p>Core entity: how many hours a consultant works on a project in a given week.</p>
   <table class="data-tabel">
-    <thead><tr><th>Kolom</th><th>Type</th><th>Beschrijving</th></tr></thead>
+    <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>consultant_id</code></td><td>uuid</td><td>Verwijzing naar consultants</td></tr>
-      <tr><td><code>project_id</code></td><td>uuid</td><td>Verwijzing naar projecten</td></tr>
-      <tr><td><code>jaar</code></td><td>integer</td><td>ISO jaarnummer</td></tr>
-      <tr><td><code>week</code></td><td>integer</td><td>ISO weeknummer (1–53)</td></tr>
-      <tr><td><code>uren</code></td><td>numeric(4,1)</td><td>Uren die week (0–60, uniek per combinatie)</td></tr>
+      <tr><td><code>consultant_id</code></td><td>uuid</td><td>Reference to consultants</td></tr>
+      <tr><td><code>project_id</code></td><td>uuid</td><td>Reference to projecten</td></tr>
+      <tr><td><code>jaar</code></td><td>integer</td><td>ISO year number</td></tr>
+      <tr><td><code>week</code></td><td>integer</td><td>ISO week number (1–53)</td></tr>
+      <tr><td><code>uren</code></td><td>integer</td><td>Hours allocated (0 = assigned, not yet filled in)</td></tr>
     </tbody>
   </table>
 
-  <h3>bezetting_snapshot / bezetting_log</h3>
-  <p><strong>bezetting_snapshot</strong> — Wekelijkse momentopname van alle toekomstige bezetting (aangemaakt elke zondag om 23:00). Gebruikt voor historische vergelijking.</p>
-  <p><strong>bezetting_log</strong> — Automatische auditlog: bij elke wijziging in bezetting wordt via een PostgreSQL trigger een rij aangemaakt met oude en nieuwe waarde.</p>
-
-  <h2>Berekening beschikbaarheid</h2>
-  <p><strong>Bezette uren</strong> = som van alle bezetting.uren voor een consultant in een week</p>
-  <p><strong>Beschikbare uren</strong> = contract_uren − bezette uren</p>
-  <p><strong>Bezettingsgraad</strong> = (bezette uren / contract_uren) × 100%</p>
-
-  <table class="data-tabel" style="margin-top: 12px;">
-    <thead><tr><th>Bezettingsgraad</th><th>Status</th><th>Kleur</th></tr></thead>
+  <h3>bezetting_snapshot</h3>
+  <p>Weekly backup of the entire allocation state, created every Sunday at 23:00.</p>
+  <table class="data-tabel">
+    <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td>&lt; 60%</td><td>Onderbezet</td><td>Rood</td></tr>
-      <tr><td>60–79%</td><td>Gemiddeld</td><td>Oranje</td></tr>
-      <tr><td>≥ 80%</td><td>Goed bezet</td><td>Groen</td></tr>
-      <tr><td>&gt; 100%</td><td>Overbezet</td><td>Paars</td></tr>
+      <tr><td><code>snapshot_week / snapshot_jaar</code></td><td>integer</td><td>The week the snapshot was taken</td></tr>
+      <tr><td><code>consultant_id / project_id</code></td><td>uuid</td><td>Copy of the allocation record</td></tr>
+      <tr><td><code>jaar / week / uren</code></td><td>integer</td><td>Snapshot values</td></tr>
     </tbody>
   </table>
+
+  <h2>Key Design Choices</h2>
+  <p><strong>Assignment via bezetting records:</strong> When a planner assigns a consultant to a project, 0-hour records are created for all weeks in the project period. This means the consultant immediately sees the project in their overview without having to fill in hours first.</p>
+  <p><strong>ISO week numbers:</strong> All week calculations use ISO 8601 (week starts on Monday). The <code>date-fns</code> library handles edge cases around year transitions.</p>
+  <p><strong>Unique constraint:</strong> The <code>bezetting</code> table has a unique constraint on <code>(consultant_id, project_id, jaar, week)</code>, which makes upserts safe.</p>
 </div>
 
-<!-- USE CASES CONSULTANT -->
+<!-- USE CASES -->
 <div class="pagina">
-  <div class="sectie-label">Functionele specificatie</div>
+  <div class="sectie-label">Functionality</div>
   <h1>Use Cases</h1>
 
   <h2>Consultant</h2>
@@ -581,318 +579,257 @@
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">1</div>
-      <div class="use-case-titel">Inloggen via magic link of wachtwoord</div>
+      <div class="use-case-titel">Sign in</div>
       <span class="use-case-rol rol-consultant">Consultant</span>
     </div>
     <div class="use-case-body">
-      <p>De consultant ontvangt wekelijks een e-mail met een directe inloglink, of logt handmatig in via het loginscherm.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Consultant opent de app of klikt op de link in de maandagmail</li>
-        <li>Bij handmatig inloggen: vul e-mailadres en wachtwoord in, of kies "magic link"</li>
-        <li>Na succesvolle authenticatie wordt doorgestuurd naar /mijn-week</li>
-      </ol>
+      <p>The consultant signs in via the login page using either a password or a magic link sent by email.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Navigate to the app URL</li>
+        <li>Enter work email address</li>
+        <li>Choose: sign in with password or request a magic link</li>
+        <li>After successful authentication, redirected to My weekly overview</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">2</div>
-      <div class="use-case-titel">Weekoverzicht bekijken</div>
+      <div class="use-case-titel">View own weekly allocation</div>
       <span class="use-case-rol rol-consultant">Consultant</span>
     </div>
     <div class="use-case-body">
-      <p>De consultant ziet een tabel met hun bezetting voor de komende 12 weken, per project per week.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Consultant navigeert naar /mijn-week</li>
-        <li>Tabel toont rijen per toegewezen project, kolommen per week</li>
-        <li>Onderaan: totaal bezette uren, contracturen en beschikbaarheid per week</li>
-        <li>Kleurcodering geeft snel inzicht in bezettingsgraad</li>
-      </ol>
+      <p>The consultant sees their own allocation for the next 12 weeks across all assigned projects.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Open My weekly overview</li>
+        <li>See a grid: projects as rows, weeks as columns</li>
+        <li>Bottom rows show: allocated hours, contract hours, available hours, percentage</li>
+        <li>Color coding: red (&lt;60%), orange (60–79%), green (≥80%), purple (&gt;100%)</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">3</div>
-      <div class="use-case-titel">Uren aanpassen</div>
+      <div class="use-case-titel">Edit own hours</div>
       <span class="use-case-rol rol-consultant">Consultant</span>
     </div>
     <div class="use-case-body">
-      <p>De consultant kan uren per project per week inline bewerken.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Klik op een cel in het weekoverzicht</li>
-        <li>Voer het nieuwe aantal uren in (0–60)</li>
-        <li>Bevestig met Enter of klik ergens anders</li>
-        <li>Gewijzigde cellen worden geel gemarkeerd</li>
-        <li>Klik "Bevestig wijzigingen" om op te slaan</li>
-      </ol>
+      <p>The consultant fills in or adjusts their hours per project per week.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Click on a cell in the weekly overview</li>
+        <li>Enter the number of hours</li>
+        <li>Changed cells are highlighted with an orange border</li>
+        <li>Click "Save changes" to save all changes at once</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">4</div>
-      <div class="use-case-titel">Validatie bij invoer</div>
-      <span class="use-case-rol rol-consultant">Consultant</span>
+      <div class="use-case-titel">Receive weekly email</div>
+      <span class="use-case-rol rol-systeem">Automated</span>
     </div>
     <div class="use-case-body">
-      <p>Het systeem voorkomt ongeldige invoer.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Weeksom &gt; 60 uur → opslaan geblokkeerd met foutmelding</li>
-        <li>Waarde &gt; 12 uur in één cel → waarschuwing (maar niet geblokkeerd)</li>
-        <li>Overbezette weken worden paars gemarkeerd in de footer</li>
-        <li>Server-side CHECK constraint als extra beveiliging</li>
-      </ol>
+      <p>Every Monday at 07:00, each active consultant receives a personalised email with their 12-week allocation overview and a magic link to log straight in.</p>
     </div>
   </div>
+
+  <h2>Planner</h2>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">5</div>
-      <div class="use-case-titel">Verlof en bench registreren</div>
-      <span class="use-case-rol rol-consultant">Consultant</span>
+      <div class="use-case-titel">View capacity dashboard</div>
+      <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>Systeemprojecten "Verlof" en "Bench" zijn altijd zichtbaar en bewerkbaar.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Consultant vult uren in bij "Verlof" of "Bench" rij</li>
-        <li>Deze tellen mee in de bezettingsberekening</li>
-        <li>Systeemprojecten kunnen niet worden verwijderd door de planner</li>
-      </ol>
+      <p>The planner sees a heatmap of all consultants across 12 weeks: percentages and colour coding per cell.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Open Dashboard</li>
+        <li>Filter by level or specific consultant (optional)</li>
+        <li>Navigate forward/backward in time with the week buttons</li>
+        <li>Click a cell to see which projects and hours are behind the percentage</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">6</div>
-      <div class="use-case-titel">Wekelijkse bezettingsemail ontvangen</div>
-      <span class="use-case-rol rol-consultant">Consultant</span>
+      <div class="use-case-titel">View consultant detail</div>
+      <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>Elke maandag om 07:00 ontvangt de consultant automatisch een overzicht per e-mail.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Supabase Edge Function genereert email voor elke actieve consultant</li>
-        <li>Email bevat tabel met bezetting komende 12 weken</li>
-        <li>Kleurcodering op basis van bezettingsgraad</li>
-        <li>"Bekijk en pas aan" knop bevat een directe magic link naar /mijn-week</li>
-      </ol>
+      <p>The planner clicks on a consultant name in the dashboard and sees the full weekly breakdown with all projects and hours for that consultant.</p>
     </div>
   </div>
-</div>
-
-<!-- USE CASES PLANNER -->
-<div class="pagina">
-  <h2>Planner</h2>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">7</div>
-      <div class="use-case-titel">Bezettingsoverzicht bekijken (heatmap)</div>
+      <div class="use-case-titel">Create project</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>De planner heeft een overzicht van alle consultants met hun bezettingsgraad per week.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Planner navigeert naar /dashboard</li>
-        <li>Heatmap toont alle actieve consultants × komende 12 weken</li>
-        <li>Cellen zijn gekleurd op basis van bezettingsgraad (rood/oranje/groen/paars)</li>
-        <li>Klik op een cel toont tooltip met projectuitsplitsing</li>
-        <li>Weeknavigatie om te schuiven naar andere periodes</li>
-      </ol>
+      <p>The planner creates a new project with name, client, start/end date and status.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Go to Projects</li>
+        <li>Click "+ New project"</li>
+        <li>Fill in name, client (optional), start/end date, status</li>
+        <li>Click "Create project"</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">8</div>
-      <div class="use-case-titel">Filteren en zoeken</div>
+      <div class="use-case-titel">Assign consultant to project</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>De planner kan de heatmap filteren op functieniveau en specifieke consultant.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Dropdown "Alle niveaus" filtert op functieniveau</li>
-        <li>Dropdown "Alle consultants" filtert op individuele consultant</li>
-        <li>Filters zijn combineerbaar</li>
-      </ol>
+      <p>The planner assigns a consultant to a project. Zero-hour records are created for all weeks in the project period so the consultant immediately sees the project.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Go to Projects</li>
+        <li>Click "Consultants (x)" on the relevant project</li>
+        <li>Select a consultant from the dropdown</li>
+        <li>Click "Assign"</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">9</div>
-      <div class="use-case-titel">Consultant detail bekijken</div>
+      <div class="use-case-titel">Remove consultant from project</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>De planner kan inzoomen op de bezetting van één consultant.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Klik op een naam in de heatmap</li>
-        <li>Navigeert naar /dashboard/consultant/:id</li>
-        <li>Zelfde tabelindeling als /mijn-week, maar read-only</li>
-        <li>Toont naam, functieniveau en contracturen bovenaan</li>
-      </ol>
+      <p>The planner removes a consultant assignment. All bezetting records for that combination are deleted.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Open the project's consultant panel</li>
+        <li>Click the × button next to the consultant's name</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">10</div>
-      <div class="use-case-titel">Project aanmaken</div>
+      <div class="use-case-titel">Close / reopen project</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>De planner maakt nieuwe projecten aan in het systeem.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Navigeer naar /dashboard/projecten</li>
-        <li>Klik "+ Nieuw project"</li>
-        <li>Vul naam (verplicht), klant, start- en einddatum in</li>
-        <li>Project wordt aangemaakt met status 'actief'</li>
-      </ol>
+      <p>A completed project can be closed. Closed projects are greyed out but remain visible. System projects (Leave, Bench) cannot be closed.</p>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">11</div>
-      <div class="use-case-titel">Consultant toewijzen aan project</div>
+      <div class="use-case-titel">Create user</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>De planner wijst consultants toe aan projecten. De consultant ziet het project daarna in hun weekoverzicht.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Klik "Consultants (n)" bij een project</li>
-        <li>Selecteer een consultant uit de dropdown</li>
-        <li>Klik "Toewijzen"</li>
-        <li>Systeem maakt bezettingsrecords aan voor alle weken in de projectperiode (0 uur)</li>
-        <li>Consultant ziet het project nu in /mijn-week en kan uren invullen</li>
-        <li>Toewijzing verwijderen via × knop bij de consultant</li>
-      </ol>
+      <p>The planner creates a new user account. A Supabase auth user is created and a consultant record is inserted simultaneously.</p>
+      <ul class="use-case-stappen stappen-lijst">
+        <li>Go to Consultants</li>
+        <li>Click "+ New user"</li>
+        <li>Fill in name, email, level, contract hours and role</li>
+        <li>Click "Create user" — the user can now sign in with their email address</li>
+      </ul>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">12</div>
-      <div class="use-case-titel">Project afsluiten</div>
+      <div class="use-case-titel">Deactivate / activate user</div>
       <span class="use-case-rol rol-planner">Planner</span>
     </div>
     <div class="use-case-body">
-      <p>Afgesloten projecten blijven zichtbaar in de lijst maar verdwijnen uit het weekoverzicht van consultants.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Klik "Afsluiten" bij een actief project</li>
-        <li>Status wijzigt naar 'afgesloten'</li>
-        <li>Project kan worden heropend via "Heropenen"</li>
-        <li>Systeemprojecten (Verlof, Bench) kunnen niet worden afgesloten</li>
-      </ol>
+      <p>The planner can deactivate a user (e.g. after departure). Inactive users no longer appear in the dashboard and receive no emails, but their data is preserved.</p>
     </div>
   </div>
+
+  <h2>Automated (System)</h2>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">13</div>
-      <div class="use-case-titel">Nieuwe gebruiker aanmaken</div>
-      <span class="use-case-rol rol-planner">Planner</span>
+      <div class="use-case-titel">Weekly snapshot</div>
+      <span class="use-case-rol rol-systeem">Automated</span>
     </div>
     <div class="use-case-body">
-      <p>De planner maakt nieuwe gebruikersaccounts aan zonder het Supabase dashboard te hoeven gebruiken.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Navigeer naar /dashboard/consultants</li>
-        <li>Klik "+ Nieuwe gebruiker"</li>
-        <li>Vul naam, e-mail, functieniveau, contracturen en rol in</li>
-        <li>Systeem roept de invite-consultant Edge Function aan</li>
-        <li>Supabase Auth account + consultant record worden aangemaakt</li>
-        <li>Nieuwe gebruiker kan direct inloggen via magic link</li>
-      </ol>
+      <p>Every Sunday at 23:00, an Edge Function creates a snapshot of the current allocation state in the <code>bezetting_snapshot</code> table. Idempotent: runs again if the same week already has a snapshot.</p>
     </div>
   </div>
 
   <div class="use-case">
     <div class="use-case-header">
       <div class="use-case-nr">14</div>
-      <div class="use-case-titel">Gebruiker deactiveren</div>
-      <span class="use-case-rol rol-planner">Planner</span>
+      <div class="use-case-titel">Weekly email dispatch</div>
+      <span class="use-case-rol rol-systeem">Automated</span>
     </div>
     <div class="use-case-body">
-      <p>De planner kan gebruikers deactiveren zodat ze niet meer kunnen inloggen maar historische data behouden blijft.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Ga naar /dashboard/consultants</li>
-        <li>Klik "Deactiveren" bij de betreffende gebruiker</li>
-        <li>Gebruiker verdwijnt uit de heatmap en kan niet meer inloggen</li>
-        <li>Historische bezettingsdata blijft bewaard</li>
-      </ol>
+      <p>Every Monday at 07:00, an Edge Function sends a personalised HTML email to each active consultant with their 12-week allocation overview. Each email contains a magic link that logs the consultant in directly.</p>
     </div>
   </div>
 </div>
 
-<!-- AUTOMATISERING -->
+<!-- BACKLOG -->
 <div class="pagina">
-  <div class="sectie-label">Automatisering</div>
-  <h1>Edge Functions &amp; Cron Jobs</h1>
+  <div class="sectie-label">Product roadmap</div>
+  <h1>Backlog</h1>
 
-  <div class="use-case">
-    <div class="use-case-header">
-      <div class="use-case-nr">A</div>
-      <div class="use-case-titel">weekly-snapshot — elke zondag 23:00</div>
-      <span class="use-case-rol rol-systeem">Automatisch</span>
+  <p>The following features have been discussed and are prioritised for future development. They are not yet implemented in the current version.</p>
+
+  <div class="backlog-item">
+    <div class="backlog-header">
+      <div class="backlog-nr">1</div>
+      <div class="backlog-titel">Exact Online integration — one-way sync</div>
+      <span class="backlog-priority prio-high">High priority</span>
     </div>
-    <div class="use-case-body">
-      <p>Maakt een wekelijkse momentopname van alle toekomstige bezettingsdata.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Bepaal huidige ISO jaar en weeknummer</li>
-        <li>Controleer of snapshot voor deze week al bestaat (idempotent)</li>
-        <li>Kopieer alle bezettingsrijen vanaf huidige week naar bezetting_snapshot</li>
-        <li>Gebruikt voor historische vergelijking van planningswijzigingen</li>
-      </ol>
+    <div class="backlog-body">
+      <p>Vintura uses Exact Online for consultant and project administration. A one-way sync from Exact to the Resource Planner would eliminate duplicate data entry.</p>
+      <p><strong>Scope:</strong> Pull consultants and projects from the Exact Online REST API into Supabase. A "Sync from Exact" button triggers an Edge Function that calls the Exact API and upserts the results.</p>
+      <p><strong>Technical requirements:</strong> Register an app in the Exact developer portal to obtain a Client ID and Client Secret. Implement OAuth 2.0 flow (redirect + token refresh). Store the refresh token as a Supabase secret. Map Exact data structure to the Resource Planner data model.</p>
+      <p><strong>Estimated effort:</strong> 1–2 days.</p>
     </div>
   </div>
 
-  <div class="use-case">
-    <div class="use-case-header">
-      <div class="use-case-nr">B</div>
-      <div class="use-case-titel">send-weekly-emails — elke maandag 07:00</div>
-      <span class="use-case-rol rol-systeem">Automatisch</span>
+  <div class="backlog-item">
+    <div class="backlog-header">
+      <div class="backlog-nr">2</div>
+      <div class="backlog-titel">Microsoft Teams — personal notifications via Graph API</div>
+      <span class="backlog-priority prio-medium">Medium priority</span>
     </div>
-    <div class="use-case-body">
-      <p>Verstuurt wekelijkse bezettingsoverzichten naar alle actieve consultants via Resend.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Haal alle actieve consultants op</li>
-        <li>Per consultant: bereken bezetting komende 12 weken</li>
-        <li>Genereer persoonlijke magic link voor directe toegang</li>
-        <li>Verstuur HTML email via Resend API met kleurgecodeerde tabel</li>
-      </ol>
+    <div class="backlog-body">
+      <p>In addition to the weekly email, consultants could receive a personalised Teams message with their allocation overview.</p>
+      <p><strong>Scope:</strong> Send a direct message (chat) to each consultant in Microsoft Teams every Monday, containing the same allocation overview as the email.</p>
+      <p><strong>Technical requirements:</strong> Register an Azure AD app with <code>Chat.Create</code> and <code>ChatMessage.Send</code> permissions. Implement OAuth 2.0 with admin consent. Store tokens as Supabase secrets. Map Vintura user emails to Teams user IDs via the Graph API.</p>
+      <p><strong>Note:</strong> Channel-based Incoming Webhooks are not suitable as they are not personalised and visible to all channel members.</p>
+      <p><strong>Estimated effort:</strong> 2–3 days.</p>
     </div>
   </div>
 
-  <div class="use-case">
-    <div class="use-case-header">
-      <div class="use-case-nr">C</div>
-      <div class="use-case-titel">invite-consultant — on demand</div>
-      <span class="use-case-rol rol-systeem">API Call</span>
+  <div class="backlog-item">
+    <div class="backlog-header">
+      <div class="backlog-nr">3</div>
+      <div class="backlog-titel">Verified sender domain for Resend</div>
+      <span class="backlog-priority prio-high">Required for production</span>
     </div>
-    <div class="use-case-body">
-      <p>Wordt aangeroepen vanuit de planner-interface bij het aanmaken van een nieuwe gebruiker.</p>
-      <ol class="use-case-stappen stappen-lijst">
-        <li>Ontvangt naam, email, functieniveau, contracturen en rol</li>
-        <li>Maakt Supabase Auth gebruiker aan (email bevestigd)</li>
-        <li>Maakt consultant record aan in de database</li>
-        <li>Bij fout: auth gebruiker wordt automatisch verwijderd (rollback)</li>
-      </ol>
+    <div class="backlog-body">
+      <p>Currently the weekly emails are sent from <code>onboarding@resend.dev</code> because no domain has been verified in Resend yet. For production use, emails should come from a Vintura address.</p>
+      <p><strong>Scope:</strong> Verify a (sub)domain in Resend, for example <code>mail.vintura.nl</code>. Add the DNS records provided by Resend to the vintura.nl DNS configuration. Set the <code>FROM_EMAIL</code> secret in Supabase to <code>noreply@mail.vintura.nl</code>.</p>
+      <p><strong>Technical requirements:</strong> Access to the DNS settings of vintura.nl (via IT administrator or domain registrar). Estimated DNS propagation time: up to 24 hours.</p>
+      <p><strong>Estimated effort:</strong> 30 minutes work + propagation wait.</p>
     </div>
   </div>
-
-  <h2>Beveiliging</h2>
-  <table class="data-tabel">
-    <thead><tr><th>Laag</th><th>Maatregel</th></tr></thead>
-    <tbody>
-      <tr><td>Authenticatie</td><td>Supabase Auth — magic links of wachtwoord, geen plain-text opslag</td></tr>
-      <tr><td>Autorisatie</td><td>Row Level Security op alle tabellen — consultant ziet alleen eigen data</td></tr>
-      <tr><td>Validatie (client)</td><td>Weeksom max 60u, waarschuwing bij &gt;12u per cel</td></tr>
-      <tr><td>Validatie (server)</td><td>CHECK constraint op bezetting.uren (0–60)</td></tr>
-      <tr><td>Audit trail</td><td>PostgreSQL trigger logt elke wijziging in bezetting_log</td></tr>
-      <tr><td>API keys</td><td>Service role key alleen in Supabase Secrets, nooit in de browser</td></tr>
-    </tbody>
-  </table>
 </div>
 
 </body>

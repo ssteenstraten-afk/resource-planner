@@ -29,7 +29,7 @@ export function AuthCallback() {
   return (
     <div className="laden-scherm">
       <div className="laden-spinner" />
-      <p>Inloggen...</p>
+      <p>Signing in...</p>
     </div>
   )
 }

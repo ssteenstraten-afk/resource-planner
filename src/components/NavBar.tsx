@@ -6,7 +6,7 @@ export function NavBar() {
   const { consultant, rol } = useAuth()
   const navigate = useNavigate()
 
-  async function uitloggen() {
+  async function signOut() {
     await supabase.auth.signOut()
     navigate('/login')
   }
@@ -28,13 +28,13 @@ export function NavBar() {
         {rol === 'planner' && (
           <>
             <Link to="/dashboard" className="nav-link">Dashboard</Link>
-            <Link to="/dashboard/projecten" className="nav-link">Projecten</Link>
+            <Link to="/dashboard/projecten" className="nav-link">Projects</Link>
             <Link to="/dashboard/consultants" className="nav-link">Consultants</Link>
-            <Link to="/dashboard/documentatie" className="nav-link">Documentatie</Link>
+            <Link to="/dashboard/documentatie" className="nav-link">Documentation</Link>
           </>
         )}
         {rol === 'consultant' && (
-          <Link to="/mijn-week" className="nav-link">Mijn week</Link>
+          <Link to="/mijn-week" className="nav-link">My week</Link>
         )}
       </div>
 
@@ -42,8 +42,8 @@ export function NavBar() {
         {consultant && (
           <span className="gebruiker-naam">{consultant.naam}</span>
         )}
-        <button className="btn-uitloggen" onClick={uitloggen}>
-          Uitloggen
+        <button className="btn-uitloggen" onClick={signOut}>
+          Sign out
         </button>
       </div>
     </nav>

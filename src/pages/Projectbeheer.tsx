@@ -43,7 +43,6 @@ export function Projectbeheer() {
 
   useEffect(() => { laadData() }, [])
 
-  // Toegewezen consultants per project (unieke consultant_ids)
   const toegewezenPerProject = useMemo(() => {
     const map = new Map<string, Set<string>>()
     for (const b of bezettingen) {
@@ -119,48 +118,48 @@ export function Projectbeheer() {
   }
 
   if (laden) {
-    return <div className="laden-scherm"><div className="laden-spinner" /><p>Projecten laden...</p></div>
+    return <div className="laden-scherm"><div className="laden-spinner" /><p>Loading projects...</p></div>
   }
 
   return (
     <div className="pagina-wrapper">
       <div className="pagina-header">
         <div>
-          <button className="btn-terug" onClick={() => navigate('/dashboard')}>← Terug naar dashboard</button>
-          <h1 className="pagina-titel">Projectbeheer</h1>
+          <button className="btn-terug" onClick={() => navigate('/dashboard')}>← Back to dashboard</button>
+          <h1 className="pagina-titel">Project management</h1>
         </div>
         <button className="btn-primair" onClick={() => setToonFormulier(t => !t)}>
-          {toonFormulier ? 'Annuleer' : '+ Nieuw project'}
+          {toonFormulier ? 'Cancel' : '+ New project'}
         </button>
       </div>
 
       {toonFormulier && (
         <div className="formulier-kaart">
-          <h2 className="formulier-titel">Nieuw project aanmaken</h2>
+          <h2 className="formulier-titel">Create new project</h2>
           <form onSubmit={handleOpslaan}>
             <div className="form-rij">
               <div className="form-veld">
-                <label>Projectnaam *</label>
+                <label>Project name *</label>
                 <input type="text" required value={formulier.naam}
                   onChange={e => setFormulier(f => ({ ...f, naam: e.target.value }))}
-                  className="form-invoer" placeholder="Naam van het project" />
+                  className="form-invoer" placeholder="Project name" />
               </div>
               <div className="form-veld">
-                <label>Klant</label>
+                <label>Client</label>
                 <input type="text" value={formulier.klant ?? ''}
                   onChange={e => setFormulier(f => ({ ...f, klant: e.target.value }))}
-                  className="form-invoer" placeholder="Klantnaam" />
+                  className="form-invoer" placeholder="Client name" />
               </div>
             </div>
             <div className="form-rij">
               <div className="form-veld">
-                <label>Startdatum</label>
+                <label>Start date</label>
                 <input type="date" value={formulier.startdatum ?? ''}
                   onChange={e => setFormulier(f => ({ ...f, startdatum: e.target.value }))}
                   className="form-invoer" />
               </div>
               <div className="form-veld">
-                <label>Einddatum</label>
+                <label>End date</label>
                 <input type="date" value={formulier.einddatum ?? ''}
                   onChange={e => setFormulier(f => ({ ...f, einddatum: e.target.value }))}
                   className="form-invoer" />
@@ -170,17 +169,17 @@ export function Projectbeheer() {
                 <select value={formulier.status ?? 'actief'}
                   onChange={e => setFormulier(f => ({ ...f, status: e.target.value as 'actief' | 'afgesloten' }))}
                   className="form-invoer">
-                  <option value="actief">Actief</option>
-                  <option value="afgesloten">Afgesloten</option>
+                  <option value="actief">Active</option>
+                  <option value="afgesloten">Closed</option>
                 </select>
               </div>
             </div>
             {fout && <div className="form-fout">{fout}</div>}
             <div className="form-acties" style={{ marginTop: 16 }}>
               <button type="submit" className="btn-primair" disabled={opslaan}>
-                {opslaan ? 'Opslaan...' : 'Project aanmaken'}
+                {opslaan ? 'Saving...' : 'Create project'}
               </button>
-              <button type="button" className="btn-secundair" onClick={() => setToonFormulier(false)}>Annuleer</button>
+              <button type="button" className="btn-secundair" onClick={() => setToonFormulier(false)}>Cancel</button>
             </div>
           </form>
         </div>
@@ -191,10 +190,10 @@ export function Projectbeheer() {
           <thead>
             <tr>
               <th>Project</th>
-              <th>Klant</th>
-              <th>Periode</th>
+              <th>Client</th>
+              <th>Period</th>
               <th>Status</th>
-              <th>Acties</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -206,20 +205,20 @@ export function Projectbeheer() {
                   <tr key={project.id} className={project.status === 'afgesloten' ? 'rij-afgesloten' : ''}>
                     <td>
                       <span className="project-naam-tekst">{project.naam}</span>
-                      {project.is_systeem && <span className="badge badge-systeem">systeem</span>}
+                      {project.is_systeem && <span className="badge badge-systeem">system</span>}
                     </td>
                     <td>{project.klant ?? '—'}</td>
                     <td>{project.startdatum ? `${project.startdatum} – ${project.einddatum ?? '…'}` : '—'}</td>
-                    <td><span className={`badge badge-${project.status}`}>{project.status}</span></td>
+                    <td><span className={`badge badge-${project.status}`}>{project.status === 'actief' ? 'active' : 'closed'}</span></td>
                     <td style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                       {!project.is_systeem && (
                         <>
                           <button className="btn-tekst"
                             onClick={() => { setGeselecteerdProject(isOpen ? null : project.id); setToewijzingFout(null) }}>
-                            {isOpen ? 'Sluiten' : `Consultants (${toegewezen.size})`}
+                            {isOpen ? 'Close' : `Consultants (${toegewezen.size})`}
                           </button>
                           <button className="btn-tekst" onClick={() => handleAfsluiten(project)}>
-                            {project.status === 'actief' ? 'Afsluiten' : 'Heropenen'}
+                            {project.status === 'actief' ? 'Close project' : 'Reopen'}
                           </button>
                         </>
                       )}
@@ -230,10 +229,10 @@ export function Projectbeheer() {
                     <tr key={`${project.id}-toewijzing`}>
                       <td colSpan={5} style={{ padding: 0 }}>
                         <div className="toewijzing-sectie">
-                          <div className="toewijzing-titel">Toegewezen consultants</div>
+                          <div className="toewijzing-titel">Assigned consultants</div>
 
                           {toegewezen.size === 0 ? (
-                            <p style={{ fontSize: 13, color: 'var(--grijs-400)', marginBottom: 12 }}>Nog niemand toegewezen.</p>
+                            <p style={{ fontSize: 13, color: 'var(--grijs-400)', marginBottom: 12 }}>No one assigned yet.</p>
                           ) : (
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
                               {Array.from(toegewezen).map(cId => {
@@ -245,7 +244,7 @@ export function Projectbeheer() {
                                     <button
                                       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--grijs-400)', fontSize: 14, lineHeight: 1, padding: '0 2px' }}
                                       onClick={() => handleVerwijderToewijzing(project.id, cId)}
-                                      title="Verwijder toewijzing"
+                                      title="Remove assignment"
                                     >×</button>
                                   </div>
                                 )
@@ -253,12 +252,12 @@ export function Projectbeheer() {
                             </div>
                           )}
 
-                          <div className="toewijzing-titel">Consultant toevoegen</div>
+                          <div className="toewijzing-titel">Add consultant</div>
                           <div className="toewijzing-rij">
                             <select value={toewijzingConsultant}
                               onChange={e => setToewijzingConsultant(e.target.value)}
                               className="form-invoer" style={{ width: 220 }}>
-                              <option value="">— Selecteer consultant —</option>
+                              <option value="">— Select consultant —</option>
                               {consultants
                                 .filter(c => !toegewezen.has(c.id))
                                 .map(c => (
@@ -268,12 +267,12 @@ export function Projectbeheer() {
                             <button className="btn-primair"
                               onClick={() => handleToewijzen(project)}
                               disabled={!toewijzingConsultant || toewijzingBezig}>
-                              {toewijzingBezig ? 'Bezig...' : 'Toewijzen'}
+                              {toewijzingBezig ? 'Working...' : 'Assign'}
                             </button>
                           </div>
                           {!project.startdatum && (
                             <p style={{ fontSize: 12, color: 'var(--grijs-400)', marginTop: 6 }}>
-                              Tip: stel een start- en einddatum in voor de juiste weken. Zonder datum worden de komende 12 weken gebruikt.
+                              Tip: set a start and end date for the correct weeks. Without a date, the next 12 weeks will be used.
                             </p>
                           )}
                           {toewijzingFout && <div className="form-fout" style={{ marginTop: 8 }}>{toewijzingFout}</div>}

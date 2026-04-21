@@ -78,10 +78,10 @@ function maakEmailHTML(
           ${projectenTekst}
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: center; color: ${txtKleur}; font-weight: 600;">
-          ${w.totaalUren}u
+          ${w.totaalUren}h
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: center; color: ${txtKleur}; font-weight: 600;">
-          ${w.beschikbaarUren > 0 ? `${w.beschikbaarUren}u vrij` : w.beschikbaarUren < 0 ? `${Math.abs(w.beschikbaarUren)}u over` : 'Vol'}
+          ${w.beschikbaarUren > 0 ? `${w.beschikbaarUren}h free` : w.beschikbaarUren < 0 ? `${Math.abs(w.beschikbaarUren)}h over` : 'Full'}
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: center; color: ${txtKleur}; font-weight: 700;">
           ${pct}%
@@ -100,15 +100,15 @@ function maakEmailHTML(
       <!-- Header -->
       <div style="background: #2563eb; padding: 24px 28px;">
         <h1 style="margin: 0; color: white; font-size: 20px; font-weight: 700;">Resource Planner</h1>
-        <p style="margin: 4px 0 0; color: #bfdbfe; font-size: 14px;">Jouw weekoverzicht</p>
+        <p style="margin: 4px 0 0; color: #bfdbfe; font-size: 14px;">Your weekly overview</p>
       </div>
 
-      <!-- Aanhef -->
+      <!-- Intro -->
       <div style="padding: 24px 28px 0;">
-        <p style="margin: 0 0 8px; color: #111827; font-size: 16px;">Hallo ${consultant.naam},</p>
+        <p style="margin: 0 0 8px; color: #111827; font-size: 16px;">Hello ${consultant.naam},</p>
         <p style="margin: 0; color: #6b7280; font-size: 14px;">
-          Hieronder zie je je bezetting voor de komende 12 weken.
-          Je contracturen zijn <strong>${consultant.contract_uren}u/week</strong>.
+          Below you'll find your allocation for the next 12 weeks.
+          Your contract hours are <strong>${consultant.contract_uren}h/week</strong>.
         </p>
       </div>
 
@@ -118,9 +118,9 @@ function maakEmailHTML(
           <thead>
             <tr style="background: #f3f4f6;">
               <th style="padding: 10px 12px; text-align: left; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Week</th>
-              <th style="padding: 10px 12px; text-align: left; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Projecten</th>
-              <th style="padding: 10px 12px; text-align: center; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Bezet</th>
-              <th style="padding: 10px 12px; text-align: center; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Beschikbaar</th>
+              <th style="padding: 10px 12px; text-align: left; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Projects</th>
+              <th style="padding: 10px 12px; text-align: center; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Allocated</th>
+              <th style="padding: 10px 12px; text-align: center; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">Available</th>
               <th style="padding: 10px 12px; text-align: center; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb;">%</th>
             </tr>
           </thead>
@@ -131,7 +131,7 @@ function maakEmailHTML(
       <!-- Legenda -->
       <div style="padding: 0 28px 16px; display: flex; gap: 12px; flex-wrap: wrap;">
         <span style="font-size: 12px; color: #6b7280;">
-          <span style="display: inline-block; width: 10px; height: 10px; background: #dcfce7; border-radius: 2px; margin-right: 4px;"></span>≥ 80% bezet
+          <span style="display: inline-block; width: 10px; height: 10px; background: #dcfce7; border-radius: 2px; margin-right: 4px;"></span>≥ 80% allocated
         </span>
         <span style="font-size: 12px; color: #6b7280;">
           <span style="display: inline-block; width: 10px; height: 10px; background: #fff7ed; border-radius: 2px; margin-right: 4px;"></span>60–79%
@@ -147,7 +147,7 @@ function maakEmailHTML(
       <!-- CTA knop -->
       <div style="padding: 8px 28px 28px; text-align: center;">
         <a href="${magicLink}" style="display: inline-block; background: #2563eb; color: white; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 15px;">
-          Bekijk en pas aan →
+          View and edit →
         </a>
       </div>
 
@@ -155,7 +155,7 @@ function maakEmailHTML(
 
     <!-- Footer -->
     <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px;">
-      Je ontvangt deze email elke maandag · Resource Planner
+      You receive this email every Monday · Resource Planner
     </p>
   </div>
 </body>
@@ -249,7 +249,7 @@ Deno.serve(async (_req) => {
         body: JSON.stringify({
           from: `Resource Planner <${FROM_EMAIL}>`,
           to: consultant.email,
-          subject: `Jouw bezetting — wk${huidigeWeek} t/m wk${weken[weken.length - 1].week}`,
+          subject: `Your allocation — wk${huidigeWeek} to wk${weken[weken.length - 1].week}`,
           html,
         }),
       })

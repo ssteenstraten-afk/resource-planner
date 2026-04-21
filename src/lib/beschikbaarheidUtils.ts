@@ -81,8 +81,8 @@ export function statusNaarKlasse(status: BezettingStatus): string {
 export function beschikbaarheidLabel(info: BeschikbaarheidInfo): string {
   if (info.beschikbareUren <= 0) {
     return info.beschikbareUren < 0
-      ? `${Math.abs(info.beschikbareUren)}u over`
-      : 'Vol'
+      ? `${Math.abs(info.beschikbareUren)}h over`
+      : 'Full'
   }
-  return `${info.beschikbareUren}u beschikbaar`
+  return `${info.beschikbareUren}h available`
 }

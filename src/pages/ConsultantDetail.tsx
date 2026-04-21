@@ -35,13 +35,13 @@ export function ConsultantDetail() {
     return (
       <div className="laden-scherm">
         <div className="laden-spinner" />
-        <p>Laden...</p>
+        <p>Loading...</p>
       </div>
     )
   }
 
   if (!consultant) {
-    return <div className="fout-banner">Consultant niet gevonden.</div>
+    return <div className="fout-banner">Consultant not found.</div>
   }
 
   return (
@@ -49,11 +49,11 @@ export function ConsultantDetail() {
       <div className="pagina-header">
         <div>
           <button className="btn-terug" onClick={() => navigate('/dashboard')}>
-            ← Terug naar dashboard
+            ← Back to dashboard
           </button>
           <h1 className="pagina-titel">{consultant.naam}</h1>
           <p className="pagina-subtitel">
-            {consultant.functieniveau} · {consultant.contract_uren}u/week · {consultant.email}
+            {consultant.functieniveau} · {consultant.contract_uren}h/week · {consultant.email}
           </p>
         </div>
       </div>

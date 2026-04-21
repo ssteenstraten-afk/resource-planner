@@ -45,7 +45,6 @@ export function BezettingGrid({
     return wijziging !== undefined ? wijziging : (rij.weken[weekKey] ?? 0)
   }
 
-  // Bereken live weektotalen inclusief lopende wijzigingen
   const liveWeekTotalen = weekTotalen.map(wt => {
     let totaal = 0
     for (const rij of rijen) {
@@ -107,7 +106,7 @@ export function BezettingGrid({
         <div className="grid-acties">
           {heeftWijzigingen && (
             <span className="onopgeslagen-melding">
-              Je hebt onopgeslagen wijzigingen
+              You have unsaved changes
             </span>
           )}
           <button
@@ -115,7 +114,7 @@ export function BezettingGrid({
             onClick={handleOpslaan}
             disabled={!heeftWijzigingen || opslaanBezig}
           >
-            {opslaanBezig ? 'Opslaan...' : 'Bevestig wijzigingen'}
+            {opslaanBezig ? 'Saving...' : 'Save changes'}
           </button>
         </div>
       )}

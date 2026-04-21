@@ -16,7 +16,7 @@ export function MijnWeek() {
     return (
       <div className="laden-scherm">
         <div className="laden-spinner" />
-        <p>Bezetting laden...</p>
+        <p>Loading allocation...</p>
       </div>
     )
   }
@@ -27,9 +27,9 @@ export function MijnWeek() {
     <div className="pagina-wrapper">
       <div className="pagina-header">
         <div>
-          <h1 className="pagina-titel">Mijn weekoverzicht</h1>
+          <h1 className="pagina-titel">My weekly overview</h1>
           <p className="pagina-subtitel">
-            {consultant.naam} · {consultant.functieniveau} · {consultant.contract_uren}u/week
+            {consultant.naam} · {consultant.functieniveau} · {consultant.contract_uren}h/week
           </p>
         </div>
       </div>
