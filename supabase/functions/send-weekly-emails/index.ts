@@ -7,6 +7,7 @@ const supabase = createClient(
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 const SITE_URL = Deno.env.get('SITE_URL') ?? 'https://resource-planner.vercel.app'
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'onboarding@resend.dev'
 
 function getISOWeekAndYear(date: Date): { week: number; jaar: number } {
   const d = new Date(date)
@@ -246,7 +247,7 @@ Deno.serve(async (_req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Resource Planner <noreply@jouwdomein.nl>',
+          from: `Resource Planner <${FROM_EMAIL}>`,
           to: consultant.email,
           subject: `Jouw bezetting — wk${huidigeWeek} t/m wk${weken[weken.length - 1].week}`,
           html,
