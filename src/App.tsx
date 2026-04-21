@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard'
 import { ConsultantDetail } from './pages/ConsultantDetail'
 import { Projectbeheer } from './pages/Projectbeheer'
 import { Consultantbeheer } from './pages/Consultantbeheer'
+import { Documentatie } from './pages/Documentatie'
 import { NavBar } from './components/NavBar'
 
 function LoginRoute() {
@@ -83,6 +84,15 @@ export default function App() {
             <PrivateRoute vereistRol="planner">
               <NavBar />
               <Consultantbeheer />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/documentatie"
+          element={
+            <PrivateRoute vereistRol="planner">
+              <NavBar />
+              <Documentatie />
             </PrivateRoute>
           }
         />
